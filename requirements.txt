@@ -2,5 +2,9 @@ chess==1.9.4
 stockfish==3.28.0
 cairosvg==2.6.0
 cairocffi==1.3.0
+# On windows do that:
+# pip uninstall cairocffi
+# pip install pipwin
+# pipwin install cairocffi
 Flask==2.2.3
 python-dotenv==1.0.0
