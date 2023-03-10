@@ -5,8 +5,6 @@
         <title>Simple chess API Docs</title>
     </head>
     <body>
-        {% filter markdown %}
-            {{ markdown_string }}
-        {% endfilter %}
+        {{ markdown_string|markdown }}
     </body>
 </html>
