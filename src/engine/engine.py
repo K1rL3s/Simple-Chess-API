@@ -51,12 +51,14 @@ def get_stockfish(
 
 def get_board_image(
         fen_position: str,
+        size: int = Defaults.BOARD_IMAGE_SIZE.value,
         orientation: str = 'w'
 ) -> BytesIO | None:
     """
     Возвращает BytesIO объект с загруженным изображением шахматной доски.
 
     :param fen_position: fen-позиция из stockfish.Stockfish.get_fen_position()
+    :param size: Размер стороны квадратной картинки.
     :param orientation: Какие фигуры внизу. 'w' или 'b'.
     :return: BytesIO PNG.
     """
@@ -65,8 +67,19 @@ def get_board_image(
         board = chess.Board(fen_position)
     except ValueError:
         return None
-    svg_str = board_to_sgv(board, orientation=chess.WHITE if orientation == 'w' else chess.BLACK)
-    return BytesIO(svg2png(bytestring=svg_str))
+
+    svg_str = board_to_sgv(
+        board,
+        orientation=chess.WHITE if orientation == 'w' else chess.BLACK,
+        size=size
+    )
+    return BytesIO(
+        svg2png(
+            bytestring=svg_str,
+            parent_width=size,
+            parent_height=size
+        )
+    )
 
 
 def make_move(engine: stockfish.Stockfish, move: str) -> chess.Termination | int:

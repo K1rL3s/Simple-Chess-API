@@ -4,12 +4,30 @@ from enum import Enum
 STOCKFISH_ENGINE_PATH = "C:/stockfish/win_x64_avx2/stockfish-windows-2022-x86-64-avx2.exe"
 
 
+# Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
-    THREADS = 4
-    DEPTH = 20
-    RAM_HASH = 1024
+    THREADS = 2
+    DEPTH = 15
+    RAM_HASH = 128
     SKILL_LEVEL = 20
     ELO = 2000
+    BOARD_IMAGE_SIZE = 240
+
+
+class Limits(Enum):
+    MAX_THREADS = 2
+    MAX_DEPTH = 15
+    MAX_RAM_HASH = 128
+    MAX_SKILL_LEVEL = 20
+    MAX_ELO = 2000
+    MAX_BOARD_IMAGE_SIZE = 1024
+
+    MIN_THREADS = 1
+    MIN_DEPTH = 1
+    MIN_RAM_HASH = 2
+    MIN_SKILL_LEVEL = 1
+    MIN_ELO = 100
+    MIN_BOARD_IMAGE_SIZE = 1
 
 
 class StatusCodes(Enum):
