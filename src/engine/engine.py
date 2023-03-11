@@ -9,7 +9,6 @@ from cairosvg import svg2png
 from src.consts import engine_params, StatusCodes, Defaults
 from src.utils.limitations import limit_engine_params
 
-
 engine_path = os.environ['STOCKFISH_ENGINE_PATH']
 
 

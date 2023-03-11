@@ -7,7 +7,6 @@ from src.engine import engine
 from src.api.json_response import make_json_response
 from src.utils.limitations import limit_board_params
 
-
 blueprint = flask.Blueprint(
     'api/chess/board',
     __name__,

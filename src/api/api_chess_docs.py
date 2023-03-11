@@ -1,6 +1,5 @@
 import flask
 
-
 blueprint = flask.Blueprint(
     'api/chess/docs',
     __name__,

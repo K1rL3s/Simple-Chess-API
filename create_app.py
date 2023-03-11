@@ -6,7 +6,6 @@ from flaskext.markdown import Markdown
 from src.api.json_response import make_json_response
 from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position
 
-
 app = Flask(__name__)
 Markdown(app, extensions=['tables'])
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']

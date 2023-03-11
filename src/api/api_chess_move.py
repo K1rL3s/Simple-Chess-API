@@ -54,5 +54,5 @@ def make_a_move() -> flask.Response:
         fen=end_fen_pos,
         stockfish_move=stockfish_move,
         prev_moves=prev_moves,
-        orientation=orientation
+        orientation='w' if 'w' in end_fen_pos else 'b'
     )
