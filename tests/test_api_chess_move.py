@@ -39,6 +39,18 @@ def test_move_successful():
     assert "fen" in data
 
 
+def test_move_after_mate():
+    params = {"prev_moves": "e2e4;f7f6;d2d4;g7g5;d1h5"}
+    response = requests.get(BASE_URL + "/move/", params=params)
+    assert response.status_code == 200
+    data = response.json()["response"]
+    assert "stockfish_move" in data
+    assert data["stockfish_move"] is None
+    assert "prev_moves" in data
+    assert "orientation" in data
+    assert "fen" in data
+
+
 def test_move_without_user_move():
     params = {"orientation": "w"}
     response = requests.get(BASE_URL + "/move/", params=params)
@@ -48,7 +60,7 @@ def test_move_without_user_move():
 def test_move_invalid_user_move_char():
     params = {"user_move": "p9p7", "prev_moves": "e2e4;e7e5;g1f3;b8c6"}
     response = requests.get(BASE_URL + "/move/", params=params)
-    assert response.status_code == 409
+    assert response.status_code == 400
 
 
 def test_move_with_invalid_orientation():
@@ -78,5 +90,5 @@ def test_move_missing_required_parameter():
 def test_move_invalid_user_move_number():
     params = {"user_move": "e0e4"}
     response = requests.get(BASE_URL + "/move/", params=params)
-    assert response.status_code == 409
+    assert response.status_code == 400
     assert "message" in response.json()["response"]

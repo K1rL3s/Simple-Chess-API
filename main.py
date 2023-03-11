@@ -1,9 +1,11 @@
 from waitress import serve
+from dotenv import load_dotenv
 
-import create_app
+load_dotenv()
 
 
 def main():
+    import create_app
     create_app.init_app()
     host, port = '0.0.0.0', 5000
     print(f'Running a {__name__} on {host}:{port}.')

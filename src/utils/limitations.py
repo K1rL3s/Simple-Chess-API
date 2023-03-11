@@ -1,7 +1,7 @@
 from src.consts import Limits
 
 
-def limit_move_params(
+def limit_engine_params(
         threads: int = 0,
         depth: int = 0,
         ram_hash: int = 0,

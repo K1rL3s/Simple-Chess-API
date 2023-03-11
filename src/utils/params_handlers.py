@@ -2,7 +2,7 @@ import flask
 
 from src.consts import Defaults, StatusCodes
 from src.api.json_response import make_json_response
-from src.utils.limitations import limit_move_params
+# from src.utils.limitations import limit_engine_params
 
 
 def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flask.Response:
@@ -20,7 +20,7 @@ def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flas
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   str(e))
 
-    threads, depth, ram_hash, skill_level, elo = limit_move_params(threads, depth, ram_hash, skill_level, elo)
+    # threads, depth, ram_hash, skill_level, elo = limit_engine_params(threads, depth, ram_hash, skill_level, elo)
 
     # Обработка некорректных данных
     if not user_move and not prev_moves and orientation != 'b':

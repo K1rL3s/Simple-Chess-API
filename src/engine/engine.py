@@ -1,3 +1,4 @@
+import os
 from io import BytesIO
 
 import stockfish
@@ -5,7 +6,11 @@ import chess
 from chess.svg import board as board_to_sgv
 from cairosvg import svg2png
 
-from src.consts import STOCKFISH_ENGINE_PATH, engine_params, StatusCodes, Defaults
+from src.consts import engine_params, StatusCodes, Defaults
+from src.utils.limitations import limit_engine_params
+
+
+engine_path = os.environ['STOCKFISH_ENGINE_PATH']
 
 
 def get_stockfish(
@@ -28,7 +33,9 @@ def get_stockfish(
     :return: stockfish.Stockfish.
     """
 
-    engine = stockfish.Stockfish(path=STOCKFISH_ENGINE_PATH,
+    threads, depth, ram_hash, skill_level, elo = limit_engine_params(threads, depth, ram_hash, skill_level, elo)
+
+    engine = stockfish.Stockfish(path=engine_path,
                                  depth=depth,
                                  parameters=engine_params)
     engine.update_engine_parameters(
@@ -43,7 +50,7 @@ def get_stockfish(
     if previous_moves:
         for move in previous_moves.split(';'):
             answer = make_move(engine, move)
-            if answer == StatusCodes.CONFLICT.value:
+            if answer == StatusCodes.INVALID_PARAMS.value:
                 return None
 
     return engine
@@ -85,13 +92,14 @@ def get_board_image(
 def make_move(engine: stockfish.Stockfish, move: str) -> chess.Termination | int:
     """
     Делатель хода. Обновляет engine, делая новый ход из текущего положения.
+
     :param engine: Движок.
     :param move: Ход формата "e2e4".
     :return: Состояние, по которому закончилась игра, или статус-код ошибки.
     """
 
     if not engine.is_move_correct(move):
-        return StatusCodes.CONFLICT.value
+        return StatusCodes.INVALID_PARAMS.value
     engine.make_moves_from_current_position([move])
     terminator = is_game_over(engine)
     return terminator.value if terminator is not None else None
@@ -100,6 +108,7 @@ def make_move(engine: stockfish.Stockfish, move: str) -> chess.Termination | int
 def is_game_over(engine: stockfish.Stockfish) -> chess.Termination | None:
     """
     Проверка на конец игры.
+
     :param engine: Движок.
     :return: Состояние, по которому закончилась игра, или None (не закончилась).
     """

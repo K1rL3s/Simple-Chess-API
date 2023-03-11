@@ -29,14 +29,14 @@ def make_a_move() -> flask.Response:
     stockfish = engine.get_stockfish(threads, depth, ram_hash, skill_level, elo, prev_moves)
     if stockfish is None:
         return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  f'param "prev_moves" has illegal moves',
+                                  f'"prev_moves" param has illegal moves',
                                   fen_position='')
 
     start_fen_pos = stockfish.get_fen_position()
     if user_move:
         answer = engine.make_move(stockfish, user_move)
-        if answer == StatusCodes.CONFLICT.value:
-            return make_json_response(StatusCodes.CONFLICT,
+        if answer == StatusCodes.INVALID_PARAMS.value:
+            return make_json_response(StatusCodes.INVALID_PARAMS,
                                       f'"{user_move}" is illegal move',
                                       fen_position=start_fen_pos)
 

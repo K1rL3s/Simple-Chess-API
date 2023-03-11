@@ -1,9 +1,6 @@
 from enum import Enum
 
 
-STOCKFISH_ENGINE_PATH = "C:/stockfish/win_x64_avx2/stockfish-windows-2022-x86-64-avx2.exe"
-
-
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
     THREADS = 2
@@ -19,7 +16,7 @@ class Limits(Enum):
     MAX_DEPTH = 15
     MAX_RAM_HASH = 128
     MAX_SKILL_LEVEL = 20
-    MAX_ELO = 2000
+    MAX_ELO = 3620
     MAX_BOARD_IMAGE_SIZE = 1024
 
     MIN_THREADS = 1
@@ -33,7 +30,6 @@ class Limits(Enum):
 class StatusCodes(Enum):
     OK = 200
     INVALID_PARAMS = 400
-    CONFLICT = 409  # Illegal move etc.
 
 
 # http://kvetka.org/Stockfish_opt.shtml#slow_m

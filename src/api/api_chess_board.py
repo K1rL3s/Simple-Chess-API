@@ -18,7 +18,7 @@ blueprint = flask.Blueprint(
 @blueprint.route('/api/chess/board/', methods=['GET'])
 def get_board_image() -> flask.Response:
     """
-    Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN-Notaion.
+    Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN.
     """
     data = flask.request.args
     # Вынести обработку в отдельный файл.
@@ -38,5 +38,6 @@ def get_board_image() -> flask.Response:
         orientation=orientation
     )
     if board_image is None:
-        return make_json_response(StatusCodes.INVALID_PARAMS, text='Invalid FEN position')
+        return make_json_response(StatusCodes.INVALID_PARAMS,
+                                  '"fen" param is invalid')
     return flask.send_file(board_image, mimetype="image/png")

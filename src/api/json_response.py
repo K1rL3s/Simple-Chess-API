@@ -7,14 +7,14 @@ from src.consts import StatusCodes
 
 def make_json_response(
         status_code: int | StatusCodes,
-        text: str,
+        message: str,
         **params
 ) -> flask.Response:
     """
 
-    :param status_code:
-    :param text:
-    :param params:
+    :param status_code: Статус код ответа.
+    :param message: Сообщение клиенту.
+    :param params: Параметры, которые будут в словаре "response".
     :return:
     """
 
@@ -29,7 +29,7 @@ def make_json_response(
             {
                 "status_code": status_code,
                 "response": {
-                    "message": str(text),
+                    "message": str(message),
                     **params
                 },
             }
