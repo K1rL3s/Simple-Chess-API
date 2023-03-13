@@ -4,8 +4,8 @@ from enum import Enum
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
     THREADS = 2
-    DEPTH = 15
-    RAM_HASH = 128
+    DEPTH = 20
+    RAM_HASH = 1024
     SKILL_LEVEL = 20
     ELO = 2000
     BOARD_IMAGE_SIZE = 240
@@ -14,15 +14,15 @@ class Defaults(Enum):
 class Limits(Enum):
     MAX_THREADS = 2
     MAX_DEPTH = 15
-    MAX_RAM_HASH = 128
+    MAX_RAM_HASH = 1024
     MAX_SKILL_LEVEL = 20
     MAX_ELO = 3620
     MAX_BOARD_IMAGE_SIZE = 1024
 
     MIN_THREADS = 1
-    MIN_DEPTH = 1
-    MIN_RAM_HASH = 2
-    MIN_SKILL_LEVEL = 1
+    MIN_DEPTH = 5
+    MIN_RAM_HASH = 128
+    MIN_SKILL_LEVEL = 5
     MIN_ELO = 100
     MIN_BOARD_IMAGE_SIZE = 1
 
