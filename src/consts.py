@@ -4,8 +4,8 @@ from enum import Enum
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
     THREADS = 2
-    DEPTH = 20
-    RAM_HASH = 1024
+    DEPTH = 15
+    RAM_HASH = 512
     SKILL_LEVEL = 20
     ELO = 2000
     BOARD_IMAGE_SIZE = 240
@@ -13,7 +13,7 @@ class Defaults(Enum):
 
 class Limits(Enum):
     MAX_THREADS = 2
-    MAX_DEPTH = 15
+    MAX_DEPTH = 20
     MAX_RAM_HASH = 1024
     MAX_SKILL_LEVEL = 20
     MAX_ELO = 3620
@@ -21,7 +21,7 @@ class Limits(Enum):
 
     MIN_THREADS = 1
     MIN_DEPTH = 5
-    MIN_RAM_HASH = 128
+    MIN_RAM_HASH = 64
     MIN_SKILL_LEVEL = 5
     MIN_ELO = 100
     MIN_BOARD_IMAGE_SIZE = 1
@@ -30,6 +30,8 @@ class Limits(Enum):
 class StatusCodes(Enum):
     OK = 200
     INVALID_PARAMS = 400
+    NOT_FOUND = 404
+    SERVER_ERROR = 500
 
 
 # http://kvetka.org/Stockfish_opt.shtml#slow_m

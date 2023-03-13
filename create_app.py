@@ -4,6 +4,7 @@ from flask import Flask
 from flaskext.markdown import Markdown
 
 from src.api.json_response import make_json_response
+from src.consts import StatusCodes
 from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess
 
 app = Flask(__name__)
@@ -11,18 +12,18 @@ Markdown(app, extensions=['tables'])
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 
-@app.errorhandler(404)
+@app.errorhandler(StatusCodes.NOT_FOUND.value)
 def not_found(_):
     return make_json_response(
-        404,
+        StatusCodes.NOT_FOUND.value,
         'Not found'
     )
 
 
-@app.errorhandler(400)
+@app.errorhandler(StatusCodes.INVALID_PARAMS.value)
 def bad_request(_):
     return make_json_response(
-        400,
+        StatusCodes.INVALID_PARAMS,
         'Bad Requst'
     )
 
@@ -30,7 +31,7 @@ def bad_request(_):
 @app.errorhandler(Exception)
 def global_exception_catcher(error):
     return make_json_response(
-        500,
+        StatusCodes.SERVER_ERROR,
         'Something went wrong. Probably invalid params',
         error=str(error)
     )
