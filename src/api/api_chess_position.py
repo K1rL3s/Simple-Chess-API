@@ -20,7 +20,11 @@ def get_position_score() -> flask.Response:
     """
     Возвращает оценку позиции (у кого больше шансов выиграть) и состояние (конец ли игры и кто выиграл).
     """
-    prev_moves, fen_position, with_engine = handle_position_params()
+    values = handle_position_params()
+    if isinstance(values, flask.Response):
+        return values
+
+    prev_moves, fen_position, with_engine = values
 
     stockfish = stockfish_engine.get_stockfish(
         previous_moves=prev_moves,
