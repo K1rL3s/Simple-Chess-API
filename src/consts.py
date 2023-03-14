@@ -21,7 +21,7 @@ class Limits(Enum):
 
     MIN_THREADS = 1
     MIN_DEPTH = 5
-    MIN_RAM_HASH = 64
+    MIN_RAM_HASH = 32
     MIN_SKILL_LEVEL = 5
     MIN_ELO = 100
     MIN_BOARD_IMAGE_SIZE = 1

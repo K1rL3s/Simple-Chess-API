@@ -8,7 +8,7 @@ def main():
     import create_app
     create_app.init_app()
     host, port = '0.0.0.0', 5000
-    print(f'Running a {__name__} on {host}:{port}.')
+    print(f'Running a "chess-api" on {host}:{port}.')
     serve(create_app.app, host=host, port=port)
 
 

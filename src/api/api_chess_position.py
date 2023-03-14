@@ -1,7 +1,7 @@
 import flask
 import chess
 
-from src.consts import StatusCodes
+from src.consts import StatusCodes, Limits
 from src.engine import engine
 from src.api.json_response import make_json_response
 
@@ -25,7 +25,10 @@ def get_position_score() -> flask.Response:
         return make_json_response(StatusCodes.INVALID_PARAMS.value,
                                   '"prev_moves" or "fen" param is required')
 
-    stockfish = engine.get_stockfish(previous_moves=prev_moves)
+    stockfish = engine.get_stockfish(previous_moves=prev_moves,
+                                     threads=Limits.MAX_THREADS.value,
+                                     ram_hash=Limits.MIN_RAM_HASH.value,
+                                     skill_level=Limits.MIN_SKILL_LEVEL.value)
     if stockfish is None:
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   f'"prev_moves" param has illegal moves')
