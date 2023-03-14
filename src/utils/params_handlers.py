@@ -94,3 +94,25 @@ def handle_board_params() -> tuple[
     check = getattr(chess, check, None)
 
     return fen_position, size, orientation, colors, last_move, coords, check
+
+
+def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Response:
+    data = flask.request.args
+    try:
+        prev_moves = data.get('prev_moves', '').lower()
+        fen_position = data.get('fen')
+        with_engine = data.get('engine', 't').lower()
+    except Exception as e:
+        return make_json_response(StatusCodes.INVALID_PARAMS,
+                                  str(e))
+
+    if not prev_moves and not fen_position:
+        return make_json_response(StatusCodes.INVALID_PARAMS.value,
+                                  '"prev_moves" or "fen" param is required')
+
+    if with_engine not in ('t', 'f'):
+        return make_json_response(StatusCodes.INVALID_PARAMS,
+                                  '"with_engine" param is invalid. It must be "t" (true) or "f" (false).')
+    with_engine = with_engine == 'f'
+
+    return prev_moves, fen_position, with_engine

@@ -2,10 +2,11 @@ from io import BytesIO
 
 import flask
 
+import src.engine.chess_board
 from src.consts import StatusCodes
-from src.engine import engine
 from src.api.json_response import make_json_response
 from src.utils.params_handlers import handle_board_params
+from src.utils.time_log import log_run_time
 
 blueprint = flask.Blueprint(
     'api/chess/board',
@@ -15,6 +16,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/board/', methods=['GET'])
+@log_run_time
 def get_board_image() -> flask.Response:
     """
     Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN.
@@ -26,7 +28,7 @@ def get_board_image() -> flask.Response:
 
     fen_position, size, orientation, colors, last_move, coords, check = values
 
-    board_image: BytesIO = engine.get_board_image(
+    board_image: BytesIO = src.engine.chess_board.get_board_image(
         fen_position=fen_position,
         size=size,
         orientation=orientation,
