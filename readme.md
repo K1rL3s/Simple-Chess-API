@@ -79,7 +79,7 @@ SECRET_KEY=<csrf-token>
 | `prev_moves`     | **string**, "cNcN;cNcN;..."                                              | Новая история ходов партии.        |
 | `orientation`    | **string**, "w" or "b"                                                   | Цвет, которым играет пользователь. |
 | `fen`            | **string**, "<...>/<...>/..."                                            | Текущая позиция в FEN.             |
-| `type`           | **string** / **null**, "checkmate", "stalemate", "insufficient_material" | Как закончилась игра.              |
+| `end_type`       | **string** / **null**, "checkmate", "stalemate", "insufficient_material" | Как закончилась игра.              |
 | `check`          | **string** / **null**, "cN"                                              | Как закончилась игра.              |
 
 <br>
@@ -116,12 +116,12 @@ SECRET_KEY=<csrf-token>
 
 2. Успешный ответ сервера:
 
-| Ключ      | Формат                                                              | Описание                                  |
-|-----------|---------------------------------------------------------------------|-------------------------------------------|
-| `is_end`  | **bool**                                                            | Закончилась ли игра.                      |
-| `who_win` | **string** / **null**, "w", "b"                                     | Кто победил.                              |
-| `type`    | **string**, "checkmate", "stalemate", "insufficient_material", "cp" | Как закончилась игра ("cp" - centipawns). |
-| `value`   | **int**                                                             | В чью пользу позиция в сантипешках.       |
-| `wdl`     | **array[int]** / **null**                                           | Оценка win/draw/loss.                     |
-| `fen`     | **string**, "<...>/<...>/..."                                       | Текущая позиция в FEN.                    |
+| Ключ       | Формат                                                              | Описание                                  |
+|------------|---------------------------------------------------------------------|-------------------------------------------|
+| `is_end`   | **bool**                                                            | Закончилась ли игра.                      |
+| `who_win`  | **string** / **null**, "w", "b"                                     | Кто победил.                              |
+| `end_type` | **string**, "checkmate", "stalemate", "insufficient_material", "cp" | Как закончилась игра ("cp" - centipawns). |
+| `value`    | **int**                                                             | В чью пользу позиция в сантипешках.       |
+| `wdl`      | **array[int]** / **null**                                           | Оценка win/draw/loss.                     |
+| `fen`      | **string**, "<...>/<...>/..."                                       | Текущая позиция в FEN.                    |
 

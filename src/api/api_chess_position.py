@@ -20,6 +20,7 @@ def get_position_score() -> flask.Response:
     """
     Возвращает оценку позиции (у кого больше шансов выиграть) и состояние (конец ли игры и кто выиграл).
     """
+
     values = handle_position_params()
     if isinstance(values, flask.Response):
         return values
@@ -75,19 +76,11 @@ def get_position_score() -> flask.Response:
     else:
         wdl = None
 
-    # position = {
-    #     "is_end": is_end,
-    #     "who_win": who_win,
-    #     "type": end_type,
-    #     "value": value,
-    #     "wdl": wdl
-    # }
-
     return make_json_response(
         200, "OK",
         is_end=is_end,
         who_win=who_win,
-        type=end_type,
+        end_type=end_type,
         value=value,
         wdl=wdl,
         fen=stockfish.get_fen_position(),

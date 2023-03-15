@@ -1,7 +1,5 @@
 import flask
 
-# from chess import Termination
-
 from src.consts import StatusCodes, Limits
 from src.api.json_response import make_json_response
 from src.engine import stockfish_engine
@@ -22,6 +20,7 @@ def make_a_move() -> flask.Response:
     """
     "Генератор" шахматных ходов.
     """
+
     values = handle_move_params()
     if isinstance(values, flask.Response):
         return values
@@ -52,6 +51,6 @@ def make_a_move() -> flask.Response:
         stockfish_move=stockfish_move,
         prev_moves=prev_moves,
         orientation='w' if 'w' in end_fen_pos else 'b',
-        type=end_type,
+        end_type=end_type,
         check=check
     )

@@ -2,6 +2,10 @@ from time import time
 
 
 def log_run_time(func):
+    """
+    Простая функция для засечения времени ответа на запрос.
+    """
+
     function_name = getattr(func, 'func_name', None) or getattr(func, '__name__', None) or '<undefined>'
 
     def wrapper(*args, **kwargs):

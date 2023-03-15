@@ -11,6 +11,7 @@ def make_json_response(
         **params
 ) -> flask.Response:
     """
+    Шаблон для ответов на запросы.
 
     :param status_code: Статус код ответа.
     :param message: Сообщение клиенту.

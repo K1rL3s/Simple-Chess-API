@@ -12,7 +12,7 @@ def test_position_with_fen():
     assert "is_end" in data
     assert "who_win" in data
     assert "value" in data
-    assert 'type' in data
+    assert 'end_type' in data
     assert "wdl" in data
     assert "fen" in data
 
@@ -26,8 +26,8 @@ def test_position_with_history():
     assert "who_win" in data
     assert "value" in data
     assert data["value"] is not None
-    assert 'type' in data
-    assert data["type"] == "cp"
+    assert 'end_type' in data
+    assert data["end_type"] == "cp"
     assert "wdl" in data
     assert data["wdl"] is not None
     assert "fen" in data
@@ -42,8 +42,8 @@ def test_position_without_engine():
     assert "who_win" in data
     assert "value" in data
     assert data["value"] is None
-    assert 'type' in data
-    assert data["type"] is None
+    assert 'end_type' in data
+    assert data["end_type"] is None
     assert "wdl" in data
     assert data["wdl"] is None
     assert "fen" in data
@@ -60,8 +60,8 @@ def test_position_checkmate():
     assert data["who_win"] == 'w'
     assert "value" in data
     assert data["value"] == 0
-    assert 'type' in data
-    assert data["type"] == "checkmate"
+    assert 'end_type' in data
+    assert data["end_type"] == "checkmate"
     assert "wdl" in data
     assert data["wdl"] is None
     assert "fen" in data
@@ -78,8 +78,8 @@ def test_position_stalemate():
     assert data["who_win"] is None
     assert "value" in data
     assert data["value"] == 0
-    assert 'type' in data
-    assert data["type"] == "stalemate"
+    assert 'end_type' in data
+    assert data["end_type"] == "stalemate"
     assert "wdl" in data
     assert data["wdl"] is None
     assert "fen" in data
@@ -96,8 +96,8 @@ def test_position_insufficient_material():
     assert data["who_win"] is None
     assert "value" in data
     assert data["value"] == 0
-    assert 'type' in data
-    assert data["type"] == "insufficient_material"
+    assert 'end_type' in data
+    assert data["end_type"] == "insufficient_material"
     assert "wdl" in data
     assert data["wdl"] is not None
     assert "fen" in data

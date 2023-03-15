@@ -6,6 +6,10 @@ from src.api.json_response import make_json_response
 
 
 def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flask.Response:
+    """
+    Обработчик параметров на запрос делания хода.
+    """
+
     try:
         data = flask.request.args
         user_move = data.get('user_move', '').lower()
@@ -47,6 +51,10 @@ def handle_board_params() -> tuple[
                                  bool,
                                  chess.Square | None
                              ] | flask.Response:
+    """
+    Обработчик параметров на запрос рисования доски.
+    """
+
     data = flask.request.args
     try:
         fen_position = data.get('fen')
@@ -98,6 +106,10 @@ def handle_board_params() -> tuple[
 
 
 def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Response:
+    """
+    Обработчик параметров на оценку позиции.
+    """
+
     data = flask.request.args
     try:
         prev_moves = data.get('prev_moves', '').lower()
