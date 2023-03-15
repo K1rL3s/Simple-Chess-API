@@ -25,8 +25,11 @@ def test_position_with_history():
     assert "is_end" in data
     assert "who_win" in data
     assert "value" in data
+    assert data["value"] is not None
     assert 'type' in data
+    assert data["type"] == "cp"
     assert "wdl" in data
+    assert data["wdl"] is not None
     assert "fen" in data
 
 
@@ -40,6 +43,7 @@ def test_position_without_engine():
     assert "value" in data
     assert data["value"] is None
     assert 'type' in data
+    assert data["type"] is None
     assert "wdl" in data
     assert data["wdl"] is None
     assert "fen" in data
@@ -95,7 +99,7 @@ def test_position_insufficient_material():
     assert 'type' in data
     assert data["type"] == "insufficient_material"
     assert "wdl" in data
-    assert data["wdl"] is None
+    assert data["wdl"] is not None
     assert "fen" in data
 
 

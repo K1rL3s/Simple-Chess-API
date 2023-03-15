@@ -102,7 +102,7 @@ def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Resp
     try:
         prev_moves = data.get('prev_moves', '').lower()
         fen_position = data.get('fen')
-        with_engine = data.get('engine', 't').lower()
+        with_engine = data.get('with_engine', 't').lower()
     except Exception as e:
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   str(e))
@@ -114,6 +114,6 @@ def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Resp
     if with_engine not in ('t', 'f'):
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   '"with_engine" param is invalid. It must be "t" (true) or "f" (false).')
-    with_engine = with_engine == 'f'
+    with_engine = with_engine == 't'
 
     return prev_moves, fen_position, with_engine
