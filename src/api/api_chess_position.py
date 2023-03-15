@@ -28,10 +28,7 @@ def get_position_score() -> flask.Response:
 
     stockfish = stockfish_engine.get_stockfish(
         previous_moves=prev_moves,
-        depth=Limits.MAX_DEPTH.value,
         threads=Limits.MAX_THREADS.value,
-        ram_hash=Limits.MAX_RAM_HASH.value,
-        skill_level=Limits.MAX_SKILL_LEVEL.value
     )
     if stockfish is None:
         return make_json_response(StatusCodes.INVALID_PARAMS,
