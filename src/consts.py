@@ -18,6 +18,7 @@ class Limits(Enum):
     MAX_SKILL_LEVEL = 20
     MAX_ELO = 3620
     MAX_BOARD_IMAGE_SIZE = 1024
+    MAX_THINK_MS = 750
 
     MIN_THREADS = 1
     MIN_DEPTH = 5

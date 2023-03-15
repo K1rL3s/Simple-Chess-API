@@ -14,6 +14,8 @@ def test_move_with_user_move_and_prev_moves():
     assert "orientation" in data
     assert data["orientation"] == "w"
     assert "fen" in data
+    assert "type" in data
+    assert "check" in data
 
 
 def test_move_first_move_with_correct_orientation():
@@ -26,6 +28,8 @@ def test_move_first_move_with_correct_orientation():
     assert "orientation" in data
     assert data["orientation"] == "b"
     assert "fen" in data
+    assert "type" in data
+    assert "check" in data
 
 
 def test_move_successful():
@@ -38,6 +42,8 @@ def test_move_successful():
     assert "orientation" in data
     assert data["orientation"] == 'w'
     assert "fen" in data
+    assert "type" in data
+    assert "check" in data
 
 
 def test_move_without_user_move():
@@ -50,6 +56,8 @@ def test_move_without_user_move():
     assert "orientation" in data
     assert data["orientation"] == 'b'
     assert "fen" in data
+    assert "type" in data
+    assert "check" in data
 
 
 def test_move_after_mate():
@@ -63,6 +71,10 @@ def test_move_after_mate():
     assert "orientation" in data
     assert data["orientation"] == 'b'
     assert "fen" in data
+    assert "type" in data
+    assert data["type"] == "checkmate"
+    assert "check" in data
+    assert data["check"] == "e8"
 
 
 def test_move_first_move_invalid_orientation():

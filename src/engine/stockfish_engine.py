@@ -53,20 +53,39 @@ def get_stockfish(
     return engine
 
 
-def make_move(engine: stockfish.Stockfish, move: str) -> chess.Termination | int | None:
+def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False) -> tuple[str | None, str | None]:
     """
     Делатель хода. Обновляет engine, делая новый ход из текущего положения.
 
     :param engine: Движок.
     :param move: Ход формата "e2e4".
+    :param is_stockfish: Делает ли ход сам движок.
     :return: Состояние, по которому закончилась игра, или статус-код ошибки.
     """
 
-    if not engine.is_move_correct(move):
+    if not is_stockfish and not engine.is_move_correct(move):
         return StatusCodes.INVALID_PARAMS.value
-    engine.make_moves_from_current_position([move])
+
+    if move:
+        engine.make_moves_from_current_position([move])
+
     terminator = is_game_over(engine)
-    return terminator.value if terminator is not None else None
+    if terminator == chess.Termination.STALEMATE:
+        terminator = 'stalemate'
+    elif terminator == chess.Termination.CHECKMATE:
+        terminator = 'checkmate'
+    elif terminator == chess.Termination.INSUFFICIENT_MATERIAL:
+        terminator = 'insufficient_material'
+    else:
+        terminator = None
+
+    board = chess.Board(fen := engine.get_fen_position())
+    if board.is_check():
+        check = chess.square_name(board.king(chess.WHITE if 'w' in fen else chess.BLACK))
+    else:
+        check = None
+
+    return terminator, check
 
 
 def is_game_over(engine: stockfish.Stockfish) -> chess.Termination | None:

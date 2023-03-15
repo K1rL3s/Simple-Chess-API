@@ -54,12 +54,17 @@ def get_position_score() -> flask.Response:
     if board.is_checkmate():
         is_end = True
         who_win = 'w' if 'b' in fen_position else 'b'
-        end_type = "mate"
+        end_type = "checkmate"
         value = 0
     elif board.is_stalemate():
         is_end = True
         who_win = None
         end_type = "stalemate"
+        value = 0
+    elif board.is_insufficient_material():
+        is_end = True
+        who_win = None
+        end_type = "insufficient_material"
         value = 0
     elif with_engine:
         evalutation = stockfish.get_evaluation()

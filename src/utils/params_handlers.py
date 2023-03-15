@@ -80,6 +80,7 @@ def handle_board_params() -> tuple[
     else:
         colors = None
 
+    # Узнал про chess.Move.from_uci, но там за неверный код ошибку даёт, поэтому оставлю это чудо ниже. :)
     if (s1 := getattr(chess, last_move[:2].upper(), None)) is not None and \
             (s2 := getattr(chess, last_move[2:].upper(), None)) is not None:
         last_move = chess.Move(s1, s2)
