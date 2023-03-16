@@ -115,19 +115,19 @@ def test_board_invalid_fen_or_none():
     params = {"fen": "invalid_fen_string"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()
 
     params.clear()
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()
 
 
 def test_board_invalid_orientation():
     params = {"orientation": "g"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()
 
 
 def test_board_invalid_coords():
@@ -135,7 +135,7 @@ def test_board_invalid_coords():
               "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()
 
 
 def test_board_invalid_colors():
@@ -143,4 +143,4 @@ def test_board_invalid_colors():
               "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()

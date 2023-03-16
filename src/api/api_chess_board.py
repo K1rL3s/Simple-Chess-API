@@ -6,7 +6,7 @@ import src.engine.chess_board
 from src.consts import StatusCodes
 from src.api.json_response import make_json_response
 from src.utils.params_handlers import handle_board_params
-from src.utils.time_log import log_run_time
+from src.utils.log_decorator import log_decorator
 
 blueprint = flask.Blueprint(
     'api/chess/board',
@@ -16,7 +16,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/board/', methods=['GET'])
-@log_run_time
+@log_decorator
 def get_board_image() -> flask.Response:
     """
     Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN.

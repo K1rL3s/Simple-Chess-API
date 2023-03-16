@@ -1,7 +1,9 @@
 from time import time
 
+import flask
 
-def log_run_time(func):
+
+def log_decorator(func):
     """
     Простая функция для засечения времени ответа на запрос.
     """
@@ -11,8 +13,14 @@ def log_run_time(func):
     def wrapper(*args, **kwargs):
         nonlocal function_name
         start = time()
-        result = func(*args, **kwargs)
+        result: flask.Response = func(*args, **kwargs)
+
+        try:
+            message = result.json.get('message')
+        except Exception:
+            message = None
+
         total = time() - start
-        print(f'{function_name} took {total:.3f} secs')
+        print(f'{function_name} took {total:.3f} secs | {result.status_code} - {message}')
         return result
     return wrapper

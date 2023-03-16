@@ -81,40 +81,45 @@ def test_move_first_move_invalid_orientation():
     params = {"orientation": "w"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
+    assert "message" in response.json()
 
 
 def test_move_invalid_user_move_char():
     params = {"user_move": "p9p7", "prev_moves": "e2e4;e7e5;g1f3;b8c6"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
+    assert "message" in response.json()
 
 
 def test_move_with_invalid_orientation():
     params = {"user_move": "e2e4", "orientation": "invalid"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
+    assert "message" in response.json()
 
 
 def test_move_with_invalid_threads():
     params = {"user_move": "e2e4", "threads": "invalid"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
+    assert "message" in response.json()
 
 
 def test_move_with_invalid_depth():
     params = {"user_move": "e2e4", "depth": "invalid"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
+    assert "message" in response.json()
 
 
 def test_move_missing_required_parameter():
     response = requests.get(BASE_URL)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()
 
 
 def test_move_invalid_user_move_number():
     params = {"user_move": "e0e4"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400
-    assert "message" in response.json()["response"]
+    assert "message" in response.json()

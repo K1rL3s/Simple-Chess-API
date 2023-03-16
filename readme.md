@@ -43,8 +43,8 @@ SECRET_KEY=<csrf-token>
 ```json
 {
     "status_code": <int>,
+    "message": <str>,
     "response": {
-        "message": <str>,
         "...": <...>
     }
 }

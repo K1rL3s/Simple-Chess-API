@@ -13,4 +13,4 @@ def api_chess_docs():
     """
     Вывод readme.md.
     """
-    return flask.redirect('/api/chess/docs')
+    return flask.redirect('/api/chess/docs/')

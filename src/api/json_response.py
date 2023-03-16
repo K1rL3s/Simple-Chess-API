@@ -29,8 +29,8 @@ def make_json_response(
         response=json.dumps(
             {
                 "status_code": status_code,
+                "message": str(message),
                 "response": {
-                    "message": str(message),
                     **params
                 },
             }

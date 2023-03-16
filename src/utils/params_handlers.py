@@ -83,7 +83,7 @@ def handle_board_params() -> tuple[
                       [pair.split('-') for pair in colors.split(';')]}
         except ValueError:
             return make_json_response(StatusCodes.INVALID_PARAMS,
-                                      '"colors" param is invalid. Between square-type and colors must be "-",'
+                                      '"colors" param is invalid. Between square-type and colors must be "-", '
                                       'between pairs must be ";"')
     else:
         colors = None
