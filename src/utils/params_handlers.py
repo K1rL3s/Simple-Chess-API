@@ -29,15 +29,15 @@ def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flas
         # Если не задан ход, раньше ходов не было и игрок не играет за чёрных
         # Нужно, чтобы машина играла белыми (сделала первый ход)
         return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  'Invalid param "user_move"')
+                                  '"user_move" param is invalid')
 
     if orientation not in ('w', 'b'):
         return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  'Invalid param "orientation". It must be "w" or "b".')
+                                  '"orientation" param is invalid. It must be "w" or "b".')
 
     if len(prev_moves) > 4 and ';' not in prev_moves:
         return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  'Invalid param "prev_moves". Between moves must be ";".')
+                                  '"prev_moves" param is invalid. Between moves must be ";".')
 
     return user_move, prev_moves, orientation, threads, depth, ram_hash, skill_level, elo
 
@@ -70,7 +70,7 @@ def handle_board_params() -> tuple[
 
     if not fen_position:
         return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  '"fen_position" param is invalid.')
+                                  '"fen_position" param is invalid')
 
     if orientation not in ('w', 'b'):
         return make_json_response(StatusCodes.INVALID_PARAMS,

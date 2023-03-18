@@ -25,16 +25,15 @@ def make_json_response(
     if not isinstance(status_code, int):
         raise TypeError(f'"status_code" param must be integer.')
 
+    data = {
+        "status_code": status_code,
+        "message": str(message),
+    }
+    if params:
+        data["response"] = {**params}
+
     response = flask.Flask.response_class(
-        response=json.dumps(
-            {
-                "status_code": status_code,
-                "message": str(message),
-                "response": {
-                    **params
-                },
-            }
-        ),
+        response=json.dumps(data),
         status=status_code,
         mimetype='application/json'
     )

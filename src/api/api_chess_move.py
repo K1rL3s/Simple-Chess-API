@@ -13,7 +13,6 @@ blueprint = flask.Blueprint(
 )
 
 
-# Сделать проверку на то, что orientation равен цвету игрока.
 @blueprint.route('/api/chess/move/', methods=['GET'])
 @log_decorator
 def make_a_move() -> flask.Response:

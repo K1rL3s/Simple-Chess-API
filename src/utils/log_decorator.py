@@ -21,6 +21,6 @@ def log_decorator(func):
             message = None
 
         total = time() - start
-        print(f'{function_name} took {total:.3f} secs | {result.status_code} - {message}')
+        print(f"{f'{function_name} took {total:.3f} secs':<40} | {result.status_code} - {message}")
         return result
     return wrapper
