@@ -17,7 +17,7 @@
 
 1. Установить **python** версии **3.10**+
    (Тестировалось на версии **3.10.8**)
-2. Установить все библиотеки в файле с помощью `python -m pip install -r ./requirements`\
+2. Установить все библиотеки в файле с помощью `python -m pip install -r ./requirements.txt`\
    *(При запуске на Windows прочтите requirements.txt для корректной установки зависимостей)*
 3. Установить шахматный движок для работы с библиотекой **stockfish**
    ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
