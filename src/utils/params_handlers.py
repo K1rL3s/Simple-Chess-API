@@ -2,7 +2,7 @@ import chess
 import flask
 
 from src.consts import Defaults, StatusCodes, Limits
-from src.api.json_response import make_json_response
+from src.utils.make_json_response import make_json_response
 
 
 def handle_move_params() -> tuple[str, str, str, int, int, int, int, int, int, int] | flask.Response:

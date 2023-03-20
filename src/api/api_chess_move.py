@@ -1,7 +1,7 @@
 import flask
 
 from src.consts import StatusCodes, Limits
-from src.api.json_response import make_json_response
+from src.utils.make_json_response import make_json_response
 from src.engine import stockfish_engine
 from src.utils.params_handlers import handle_move_params
 from src.utils.log_decorator import log_decorator

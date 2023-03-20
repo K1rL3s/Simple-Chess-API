@@ -1,7 +1,7 @@
 from pathlib import Path
 
-import pytest  # noqa
-import requests  # noqa
+import pytest
+import requests
 
 
 IMAGES = Path().absolute() / 'board_images'

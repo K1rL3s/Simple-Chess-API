@@ -3,9 +3,9 @@ import os
 from flask import Flask
 from flaskext.markdown import Markdown
 
-from src.api.json_response import make_json_response
+from src.utils.make_json_response import make_json_response
 from src.consts import StatusCodes
-from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess
+from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess, api_chess_limits
 
 app = Flask(__name__)
 Markdown(app, extensions=['tables'])
@@ -43,6 +43,7 @@ def init_app():
     # gunicorn
     app.register_blueprint(api_chess.blueprint)
     app.register_blueprint(api_chess_docs.blueprint)
+    app.register_blueprint(api_chess_limits.blueprint)
     app.register_blueprint(api_chess_move.blueprint)
     app.register_blueprint(api_chess_board.blueprint)
     app.register_blueprint(api_chess_position.blueprint)

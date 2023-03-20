@@ -127,3 +127,29 @@ SECRET_KEY=<csrf-token>
 | `wdl`      | **array[int]** / **null**                                           | Оценка win/draw/loss.                     |
 | `fen`      | **string**, "<...>/<...>/..."                                       | Текущая позиция в FEN.                    |
 
+<br>
+
+## Информационные запросы
+
+### /api/chess/docs/
+Возвращает HTML страницу с этим readme.md файлом.
+
+<br>
+
+### /api/chess/limits/
+Возвращает JSON с минимумом, дефолтом и максимумом для числовых параметров генерации хода и рисования доски.
+```json
+{
+    "status_code": 200,
+    "message": "OK",
+    "response": {
+        "param_name": {
+            "min": <int>,
+            "default": <int>,
+            "max": <int>
+        }
+    }
+}
+```
+
+
