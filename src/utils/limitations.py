@@ -21,13 +21,13 @@ def limit_engine_params(
     :return: Передаваемые значения, ограниченные src.consts.Limits
     """
 
-    min_time = max(min(min_time, Limits.MAX_THINK_MS.value), Limits.MIN_THINK_MS.value)
+    min_time = int(max(min(min_time, Limits.MAX_THINK_MS.value), Limits.MIN_THINK_MS.value))
     # max_time должно ограничиваться в другом месте :(
-    threads = max(min(threads, Limits.MAX_THREADS.value), Limits.MIN_THREADS.value)
-    depth = max(min(depth, Limits.MAX_DEPTH.value), Limits.MIN_DEPTH.value)
-    ram_hash = max(min(ram_hash, Limits.MAX_RAM_HASH.value), Limits.MIN_RAM_HASH.value)
-    skill_level = max(min(skill_level, Limits.MAX_SKILL_LEVEL.value), Limits.MIN_SKILL_LEVEL.value)
-    elo = max(min(elo, Limits.MAX_ELO.value), Limits.MIN_ELO.value)
+    threads = int(max(min(threads, Limits.MAX_THREADS.value), Limits.MIN_THREADS.value))
+    depth = int(max(min(depth, Limits.MAX_DEPTH.value), Limits.MIN_DEPTH.value))
+    ram_hash = int(max(min(ram_hash, Limits.MAX_RAM_HASH.value), Limits.MIN_RAM_HASH.value))
+    skill_level = int(max(min(skill_level, Limits.MAX_SKILL_LEVEL.value), Limits.MIN_SKILL_LEVEL.value))
+    elo = int(max(min(elo, Limits.MAX_ELO.value), Limits.MIN_ELO.value))
 
     return min_time, threads, depth, ram_hash, skill_level, elo
 

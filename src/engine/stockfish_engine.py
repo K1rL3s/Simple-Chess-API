@@ -45,7 +45,7 @@ def get_stockfish(
     engine = stockfish.Stockfish(
         path=engine_path,
         depth=depth,
-        parameters=engine_params
+        parameters=new_params
     )
 
     if previous_moves:
@@ -73,7 +73,7 @@ def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False
     if move:
         engine.make_moves_from_current_position([move])
 
-    terminator = is_game_over(engine)
+    terminator = is_game_over(engine.get_fen_position())
     if terminator == chess.Termination.STALEMATE:
         terminator = 'stalemate'
     elif terminator == chess.Termination.CHECKMATE:
@@ -92,15 +92,15 @@ def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False
     return terminator, check
 
 
-def is_game_over(engine: stockfish.Stockfish) -> chess.Termination | None:
+def is_game_over(fen: str) -> chess.Termination | None:
     """
     Проверка на конец игры.
 
-    :param engine: Движок.
+    :param fen: FEN позиция.
     :return: Состояние, по которому закончилась игра, или None (не закончилась).
     """
 
-    outcome = chess.Board(engine.get_fen_position()).outcome()
+    outcome = chess.Board(fen).outcome()
     if outcome is not None:
         return outcome.termination
     return None
