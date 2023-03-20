@@ -10,6 +10,7 @@ engine_path = os.environ['STOCKFISH_ENGINE_PATH']
 
 
 def get_stockfish(
+        min_time: int = Defaults.THINK_MS.value,
         threads: int = Defaults.THREADS.value,
         depth: int = Defaults.DEPTH.value,
         ram_hash: int = Defaults.RAM_HASH.value,
@@ -20,6 +21,7 @@ def get_stockfish(
     """
     Возвращает instance stockfish.Stockfish с указанными параметрами.
 
+    :param min_time: = Минимальное время движку на подумать.
     :param threads: Потоки для работы движка. Больше - сильнее. Должно быть меньше, чем доступно на пк.
     :param depth: Глубина продумывания ходов.
     :param ram_hash: Кол-во оперативный памяти в МБ. Должно быть степенью двойки.
@@ -29,10 +31,12 @@ def get_stockfish(
     :return: stockfish.Stockfish.
     """
 
-    threads, depth, ram_hash, skill_level, elo = limit_engine_params(threads, depth, ram_hash, skill_level, elo)
+    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(min_time, threads, depth, ram_hash,
+                                                                               skill_level, elo)
 
     new_params = engine_params.copy()
     new_params.update({
+        "Minimum Thinking Time": min_time,
         "Threads": threads,
         "Hash": ram_hash,
         "Skill Level": skill_level,

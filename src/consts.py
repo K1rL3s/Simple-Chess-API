@@ -3,6 +3,7 @@ from enum import Enum
 
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
+    THINK_MS = 1000
     THREADS = 2
     DEPTH = 15
     RAM_HASH = 512
@@ -18,7 +19,7 @@ class Limits(Enum):
     MAX_SKILL_LEVEL = 20
     MAX_ELO = 3620
     MAX_BOARD_IMAGE_SIZE = 1024
-    MAX_THINK_MS = 750
+    MAX_THINK_MS = 5000
 
     MIN_THREADS = 1
     MIN_DEPTH = 5
@@ -26,6 +27,7 @@ class Limits(Enum):
     MIN_SKILL_LEVEL = 5
     MIN_ELO = 100
     MIN_BOARD_IMAGE_SIZE = 1
+    MIN_THINK_MS = 100
 
 
 class StatusCodes(Enum):

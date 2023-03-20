@@ -1,11 +1,11 @@
 import chess
 import flask
 
-from src.consts import Defaults, StatusCodes
+from src.consts import Defaults, StatusCodes, Limits
 from src.api.json_response import make_json_response
 
 
-def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flask.Response:
+def handle_move_params() -> tuple[str, str, str, int, int, int, int, int, int, int] | flask.Response:
     """
     Обработчик параметров на запрос делания хода.
     """
@@ -15,6 +15,8 @@ def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flas
         user_move = data.get('user_move', '').lower()
         prev_moves = data.get('prev_moves', '').lower()
         orientation = str(data.get('orientation', 'w')).lower()
+        min_time = int(data.get('min_time', Limits.MIN_THINK_MS.value))
+        max_time = int(data.get('max_time', Defaults.THINK_MS.value))
         threads = int(data.get('threads', Defaults.THREADS.value))
         depth = int(data.get('depth', Defaults.DEPTH.value))
         ram_hash = int(data.get('ram_hash', Defaults.RAM_HASH.value))
@@ -31,6 +33,9 @@ def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flas
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   '"user_move" param is invalid')
 
+    if min_time > max_time:
+        max_time = min_time
+
     if orientation not in ('w', 'b'):
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   '"orientation" param is invalid. It must be "w" or "b".')
@@ -39,7 +44,7 @@ def handle_move_params() -> tuple[str, str, str, int, int, int, int, int] | flas
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   '"prev_moves" param is invalid. Between moves must be ";".')
 
-    return user_move, prev_moves, orientation, threads, depth, ram_hash, skill_level, elo
+    return user_move, prev_moves, orientation, min_time, max_time, threads, depth, ram_hash, skill_level, elo
 
 
 def handle_board_params() -> tuple[

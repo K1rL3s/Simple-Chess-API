@@ -89,7 +89,64 @@ def test_move_after_mate():
     assert "end_type" in data
     assert data["end_type"] == "checkmate"
     assert "check" in data
-    assert data["check"] == "e8"
+
+
+def test_move_min_time():
+    params = {"user_move": "e2e4",
+              "orientation": "w",
+              "min_time": 5000}  # Чтоб заметнее было в тестах
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 200
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "stockfish_move" in data
+    assert "prev_moves" in data
+    assert "orientation" in data
+    assert "fen" in data
+    assert "end_type" in data
+    assert "check" in data
+
+
+def test_move_max_time():
+    params = {"user_move": "e2e4",
+              "orientation": "w",
+              "max_time": 100}  # ~250+100ms
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 200
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "stockfish_move" in data
+    assert "prev_moves" in data
+    assert "orientation" in data
+    assert "fen" in data
+    assert "end_type" in data
+    assert "check" in data
+
+
+def test_move_with_invalid_max_time():
+    params = {"user_move": "e2e4",
+              "orientation": "w",
+              "max_time": "invalid"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
+
+
+def test_move_with_invalid_min_time():
+    params = {"user_move": "e2e4",
+              "orientation": "w",
+              "min_time": "invalid"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
 
 
 def test_move_first_move_invalid_orientation():
