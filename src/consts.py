@@ -48,7 +48,7 @@ engine_params = {
     "MultiPV": 3,  # Сколько рекомендуемых ходов выводить движку.
     "Skill Level": Defaults.SKILL_LEVEL.value,  # Сила движка от 1 до 20
     "Move Overhead": 0,
-    "Minimum Thinking Time": 0,  # Минимальное время на подумать движку (уменьшить?).
+    "Minimum Thinking Time": Limits.MIN_THINK_MS.value,  # Минимальное время на подумать движку.
     "Slow Mover": 100,
     "UCI_Chess960": "false",
     "UCI_LimitStrength": "false",
