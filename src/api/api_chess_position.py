@@ -67,6 +67,8 @@ def get_position_score() -> flask.Response:
     elif with_engine:
         evalutation = stockfish.get_evaluation()
         end_type = evalutation["type"]
+        if end_type == 'mate':
+            end_type = 'checkmate'
         value = evalutation["value"]
 
     if with_engine and stockfish.does_current_engine_version_have_wdl_option():
