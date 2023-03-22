@@ -79,7 +79,7 @@ def get_position_score() -> flask.Response:
         wdl = None
 
     return make_json_response(
-        200, "OK",
+        StatusCodes.OK, "OK",
         is_end=is_end,
         who_win=who_win,
         end_type=end_type,
