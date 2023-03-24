@@ -51,7 +51,7 @@ def get_position_score() -> flask.Response:
     value = None
     if board.is_checkmate():
         is_end = True
-        who_win = 'w' if 'b' in fen_position else 'b'
+        who_win = 'b' if 'w' in fen_position else 'w'
         end_type = "checkmate"
         value = 0
     elif board.is_stalemate():
@@ -85,5 +85,5 @@ def get_position_score() -> flask.Response:
         end_type=end_type,
         value=value,
         wdl=wdl,
-        fen=stockfish.get_fen_position(),
+        fen=fen_position,
     )

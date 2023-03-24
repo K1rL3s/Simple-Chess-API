@@ -154,3 +154,13 @@ def test_board_invalid_colors():
     data = response.json()
     assert "message" in data
     assert "status_code" in data
+
+
+def test_board_invalid_size():
+    params = {"size": "invalid",
+              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data

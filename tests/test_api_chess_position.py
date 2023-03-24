@@ -58,7 +58,7 @@ def test_position_without_engine():
     assert "fen" in data
 
 
-def test_position_checkmate():
+def test_position_white_win_by_checkmate():
     params = {"prev_moves": "e2e4;f7f6;d2d4;g7g5;d1h5"}
     response = requests.get(BASE_URL, params=params)
     data = response.json()
@@ -70,6 +70,27 @@ def test_position_checkmate():
     assert data["is_end"] is True
     assert "who_win" in data
     assert data["who_win"] == 'w'
+    assert "value" in data
+    assert data["value"] == 0
+    assert 'end_type' in data
+    assert data["end_type"] == "checkmate"
+    assert "wdl" in data
+    assert data["wdl"] is None
+    assert "fen" in data
+
+
+def test_position_black_win_by_checkmate():
+    params = {"fen": "r1b1kbnr/pp2p2p/B1n3p1/2pp3K/4pq2/8/PPPP1PPP/RNBQ2NR w kq - 0 9"}
+    response = requests.get(BASE_URL, params=params)
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert response.status_code == 200
+    assert "is_end" in data
+    assert data["is_end"] is True
+    assert "who_win" in data
+    assert data["who_win"] == 'b'
     assert "value" in data
     assert data["value"] == 0
     assert 'end_type' in data

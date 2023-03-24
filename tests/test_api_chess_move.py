@@ -209,3 +209,30 @@ def test_move_invalid_user_move_number():
     data = response.json()
     assert "message" in data
     assert "status_code" in data
+
+
+def test_move_invalid_ram_hash():
+    params = {"user_move": "e2e4", "ram_hash": "invalid"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
+
+
+def test_move_invalid_skill_level():
+    params = {"user_move": "e2e4", "skill_level": "invalid"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
+
+
+def test_move_invalid_elo():
+    params = {"user_move": "e2e4", "elo": "invalid"}
+    response = requests.get(BASE_URL, params=params)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
