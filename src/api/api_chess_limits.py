@@ -24,7 +24,7 @@ def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> di
 
 
 @blueprint.route('/api/chess/limits/', methods=['GET'])
-@log_decorator
+@log_decorator(entry=False, output=False, level='INFO')
 @cache
 def api_chess_limits():
     """

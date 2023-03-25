@@ -16,7 +16,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/board/', methods=['GET'])
-@log_decorator
+@log_decorator(entry=False, output=False, level='INFO')
 def get_board_image() -> flask.Response:
     """
     Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN.

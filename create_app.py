@@ -1,15 +1,27 @@
 import os
+from pathlib import Path
 
 from flask import Flask
 from flaskext.markdown import Markdown
+from loguru import logger
 
 from src.utils.make_json_response import make_json_response
 from src.consts import StatusCodes
 from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess, api_chess_limits
 
+
 app = Flask(__name__)
 Markdown(app, extensions=['tables'])
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
+abs_path = Path().absolute()
+logger.add(
+    abs_path / 'logs' / 'logs.log',
+    format="{time:YYYY-MM-DD HH:mm:ss.SSS} {level:<7} {message}",
+    level='DEBUG',
+    rotation="00:00",
+    compression="zip",
+)
 
 
 @app.errorhandler(StatusCodes.NOT_FOUND.value)
@@ -24,7 +36,7 @@ def not_found(_):
 def bad_request(_):
     return make_json_response(
         StatusCodes.INVALID_PARAMS,
-        'Bad Requst'
+        'Bad Request'
     )
 
 

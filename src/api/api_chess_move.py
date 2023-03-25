@@ -14,7 +14,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/move/', methods=['GET'])
-@log_decorator
+@log_decorator(entry=False, output=False, level='INFO')
 def make_a_move() -> flask.Response:
     """
     "Генератор" шахматных ходов.

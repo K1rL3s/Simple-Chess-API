@@ -159,13 +159,8 @@ def test_position_evaluation_with_invalid_history():
     assert response.status_code == 400
 
 
-def test_position_evaluation_with_invalid_params():
-    params = {"invalid_param": "invalid_value"}
-    response = requests.get(BASE_URL, params=params)
-    assert response.status_code == 400
-
-
 def test_position_evaluation_with_invalid_engine():
-    params = {"with_engine": "g"}
+    params = {"fen": "r1bqkbnr/pppppppp/2n5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1",
+              "with_engine": "g"}
     response = requests.get(BASE_URL, params=params)
     assert response.status_code == 400

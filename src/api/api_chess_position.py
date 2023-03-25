@@ -15,7 +15,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/position/', methods=['GET'])
-@log_decorator
+@log_decorator(entry=False, output=False, level='INFO')
 def get_position_score() -> flask.Response:
     """
     Возвращает оценку позиции (у кого больше шансов выиграть) и состояние (конец ли игры и кто выиграл).
