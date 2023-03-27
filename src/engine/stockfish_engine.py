@@ -4,11 +4,13 @@ import stockfish
 import chess
 
 from src.consts import engine_params, StatusCodes, Defaults
+from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
 
 engine_path = os.environ['STOCKFISH_ENGINE_PATH']
 
 
+@log(entry=False, output=False, level='DEBUG')
 def get_stockfish(
         min_time: int = Defaults.THINK_MS.value,
         threads: int = Defaults.THREADS.value,

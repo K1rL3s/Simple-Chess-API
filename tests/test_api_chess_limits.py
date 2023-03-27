@@ -1,13 +1,19 @@
-import pytest
+import os
+
 import requests
+from dotenv import load_dotenv
 
 from src.consts import Limits, Defaults
 
 BASE_URL = "http://127.0.0.1:5000/api/chess/limits/"
 
+load_dotenv()
+
+headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
+
 
 def test_limits():
-    response = requests.get(BASE_URL)
+    response = requests.get(BASE_URL, headers=headers)
     assert response.status_code == 200
 
     data = response.json()

@@ -1,11 +1,19 @@
 import functools
+import os
 from time import time
 
 import flask
 from loguru import logger
 
+from src.consts import StatusCodes
+from src.utils.make_json_response import make_json_response
 
-def log_decorator(entry: bool = True, output: bool = True, level: str = "DEBUG"):
+
+# В `.env` оставить пустым или не писать вообще, если без авторизации
+api_auth_key = os.environ.get("API_AUTH_KEY")
+
+
+def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
     """
     Логгер выполнения функции.
     :param entry: Выводить ли входные данные.
@@ -46,3 +54,22 @@ def log_decorator(entry: bool = True, output: bool = True, level: str = "DEBUG")
         return wrapped
 
     return wrapper
+
+
+def requires_auth(func):
+    """
+    Декоратор для примитивной авторизации в апишке по заранее заданному секретному ключу.
+    Ключ один, хранится и у сервера, и у пользователя.
+    Если у сервера нет ключа, то доступ у всех через всё.
+    """
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        auth_header = flask.request.headers.get('Authorization', '')
+
+        if api_auth_key and auth_header != api_auth_key:
+            return make_json_response(StatusCodes.NOT_AUTH, 'Authorization key missing or invalid')
+
+        return func(*args, **kwargs)
+
+    return wrapped

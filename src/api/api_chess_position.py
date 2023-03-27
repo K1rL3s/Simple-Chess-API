@@ -5,7 +5,7 @@ from src.consts import StatusCodes, Limits
 from src.engine import stockfish_engine
 from src.utils.make_json_response import make_json_response
 from src.utils.params_handlers import handle_position_params
-from src.utils.log_decorator import log_decorator
+from src.utils.decorators import log, requires_auth
 
 blueprint = flask.Blueprint(
     'api/chess/position',
@@ -15,7 +15,8 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/position/', methods=['GET'])
-@log_decorator(entry=False, output=False, level='INFO')
+@log(entry=False, output=False, level='INFO')
+@requires_auth
 def get_position_score() -> flask.Response:
     """
     Возвращает оценку позиции (у кого больше шансов выиграть) и состояние (конец ли игры и кто выиграл).

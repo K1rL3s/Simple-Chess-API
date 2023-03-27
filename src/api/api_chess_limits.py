@@ -4,7 +4,7 @@ from functools import cache
 import flask
 
 from src.consts import Limits, Defaults, StatusCodes
-from src.utils.log_decorator import log_decorator
+from src.utils.decorators import log, requires_auth
 from src.utils.make_json_response import make_json_response
 
 blueprint = flask.Blueprint(
@@ -24,7 +24,8 @@ def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> di
 
 
 @blueprint.route('/api/chess/limits/', methods=['GET'])
-@log_decorator(entry=False, output=False, level='INFO')
+@log(entry=False, output=False, level='INFO')
+@requires_auth
 @cache
 def api_chess_limits():
     """

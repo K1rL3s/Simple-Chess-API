@@ -4,7 +4,7 @@ from src.consts import StatusCodes, Limits
 from src.utils.make_json_response import make_json_response
 from src.engine import stockfish_engine
 from src.utils.params_handlers import handle_move_params
-from src.utils.log_decorator import log_decorator
+from src.utils.decorators import log, requires_auth
 
 blueprint = flask.Blueprint(
     'api/chess/move',
@@ -14,7 +14,8 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/move/', methods=['GET'])
-@log_decorator(entry=False, output=False, level='INFO')
+@log(entry=False, output=False, level='INFO')
+@requires_auth
 def make_a_move() -> flask.Response:
     """
     "Генератор" шахматных ходов.

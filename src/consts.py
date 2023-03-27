@@ -33,6 +33,7 @@ class Limits(Enum):
 class StatusCodes(Enum):
     OK = 200
     INVALID_PARAMS = 400
+    NOT_AUTH = 403
     NOT_FOUND = 404
     SERVER_ERROR = 500
 
