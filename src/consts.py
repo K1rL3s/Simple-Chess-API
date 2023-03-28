@@ -46,11 +46,11 @@ engine_params = {
     "Threads": Defaults.THREADS.value,  # Больше - сильнее. Должно быть меньше, чем доступно на пк.
     "Ponder": "false",
     "Hash": Defaults.RAM_HASH.value,  # Кол-во оперативный памяти в МБ. Должно быть степенью двойки.
-    "MultiPV": 3,  # Сколько рекомендуемых ходов выводить движку.
+    "MultiPV": 1,  # Сколько рекомендуемых ходов выводить движку.
     "Skill Level": Defaults.SKILL_LEVEL.value,  # Сила движка от 1 до 20
     "Move Overhead": 0,
     "Minimum Thinking Time": Limits.MIN_THINK_MS.value,  # Минимальное время на подумать движку.
-    "Slow Mover": 100,
+    "Slow Mover": 10,
     "UCI_Chess960": "false",
     "UCI_LimitStrength": "false",
     "UCI_Elo": Defaults.ELO.value
