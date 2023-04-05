@@ -17,20 +17,32 @@
 
 1. Установить **python** версии **3.10**+
    (Тестировалось на версии **3.10.8**)
-2. Склонировать репозиторий и перейти в него: `git clone https://github.com/K1rL3s/Simple-Chess-API.git`
-3. Установить все нужные библиотеки: `pip install -r ./requirements.txt`\
-   *(При запуске на Windows прочтите requirements.txt для корректной установки зависимостей)*
+
+2. Склонировать репозиторий и перейти в него:
+```commandline
+git clone https://github.com/K1rL3s/Simple-Chess-API.git
+cd ./Simple-Chess-API
+```
+
+3. Установить все нужные библиотеки. \
+   *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
+```commandline
+pip install -r ./requirements.txt
+```
+
 4. Установить шахматный движок для работы с библиотекой **stockfish**
    ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
-5. Создать и заполнить файл `.env`
-6. Запустить сервер с помощью команды `python ./main.py`
 
-- Файл `.env` в корневой папке:
-
+5. Создать и заполнить файл `.env` в корневой папке:
 ```env
-STOCKFISH_ENGINE_PATH=<путь до движка>
+STOCKFISH_ENGINE_PATH=<path-to-engine-exe>
 API_AUTH_KEY=<token> (без авторизации - оставить пустым)
 SECRET_KEY=<csrf-token>
+```
+
+6. Запустить сервер:
+```commandline
+python ./main.py
 ```
 
 ### Формат запросов-ответов
