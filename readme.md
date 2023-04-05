@@ -17,12 +17,13 @@
 
 1. Установить **python** версии **3.10**+
    (Тестировалось на версии **3.10.8**)
-2. Установить все библиотеки в файле с помощью `python -m pip install -r ./requirements.txt`\
+2. Склонировать репозиторий и перейти в него: `git clone https://github.com/K1rL3s/Simple-Chess-API.git`
+3. Установить все нужные библиотеки: `pip install -r ./requirements.txt`\
    *(При запуске на Windows прочтите requirements.txt для корректной установки зависимостей)*
-3. Установить шахматный движок для работы с библиотекой **stockfish**
+4. Установить шахматный движок для работы с библиотекой **stockfish**
    ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
-4. Создать и заполнить файл `.env`
-5. Запустить сервер с помощью команды `python main.py`
+5. Создать и заполнить файл `.env`
+6. Запустить сервер с помощью команды `python ./main.py`
 
 - Файл `.env` в корневой папке:
 
@@ -134,12 +135,15 @@ SECRET_KEY=<csrf-token>
 ## Информационные запросы
 
 ### /api/chess/docs/
+
 Возвращает HTML страницу с этим readme.md файлом.
 
 <br>
 
 ### /api/chess/limits/
+
 Возвращает JSON с минимумом, дефолтом и максимумом для числовых параметров генерации хода и рисования доски.
+
 ```json
 {
     "status_code": 200,
