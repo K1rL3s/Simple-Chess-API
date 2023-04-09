@@ -1,7 +1,5 @@
 from random import randint
 
-import pytest
-
 from src.consts import Limits
 from src.utils.limitations import limit_engine_params, limit_board_params
 

@@ -1,13 +1,12 @@
-import os
-
 import stockfish
 import chess
 
+from src.consts import Config
 from src.consts import engine_params, StatusCodes, Defaults
 from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
 
-engine_path = os.environ['STOCKFISH_ENGINE_PATH']
+engine_path = Config.ENGINE_PATH
 
 
 @log(entry=False, output=False, level='DEBUG')
@@ -45,7 +44,7 @@ def get_stockfish(
         "UCI_Elo": elo
     })
     engine = stockfish.Stockfish(
-        path=engine_path,
+        path=Config.ENGINE_PATH,
         depth=depth,
         parameters=new_params
     )

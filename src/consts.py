@@ -1,30 +1,43 @@
+import os
 from enum import Enum
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    ENGINE_PATH = os.environ['STOCKFISH_ENGINE_PATH']
+    # В `.env` оставить пустым или не писать вообще, если без авторизации
+    API_AUTH_KEY = os.environ.get("API_AUTH_KEY")
 
 
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
 class Defaults(Enum):
     THINK_MS = 1000
-    THREADS = 2
+    THREADS = 1
     DEPTH = 15
-    RAM_HASH = 512
+    RAM_HASH = 128
     SKILL_LEVEL = 20
-    ELO = 2000
-    BOARD_IMAGE_SIZE = 240
+    ELO = 3620
+    BOARD_IMAGE_SIZE = 1024
 
 
 class Limits(Enum):
+    MAX_THINK_MS = 5000
     MAX_THREADS = 2
     MAX_DEPTH = 20
-    MAX_RAM_HASH = 1024
+    MAX_RAM_HASH = 512
     MAX_SKILL_LEVEL = 20
     MAX_ELO = 3620
     MAX_BOARD_IMAGE_SIZE = 1024
-    MAX_THINK_MS = 5000
 
     MIN_THREADS = 1
     MIN_DEPTH = 5
     MIN_RAM_HASH = 32
-    MIN_SKILL_LEVEL = 5
+    MIN_SKILL_LEVEL = 1
     MIN_ELO = 100
     MIN_BOARD_IMAGE_SIZE = 1
     MIN_THINK_MS = 100

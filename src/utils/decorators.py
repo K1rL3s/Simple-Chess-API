@@ -1,16 +1,12 @@
 import functools
-import os
 from time import time
 
 import flask
 from loguru import logger
 
+from src.consts import Config
 from src.consts import StatusCodes
 from src.utils.make_json_response import make_json_response
-
-
-# В `.env` оставить пустым или не писать вообще, если без авторизации
-api_auth_key = os.environ.get("API_AUTH_KEY")
 
 
 def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
@@ -66,7 +62,7 @@ def requires_auth(func):
     def wrapped(*args, **kwargs):
         auth_header = flask.request.headers.get('Authorization', '')
 
-        if api_auth_key and auth_header != api_auth_key:
+        if Config.API_AUTH_KEY and auth_header != Config.API_AUTH_KEY:
             return make_json_response(StatusCodes.NOT_AUTH, 'Authorization key missing or invalid')
 
         return func(*args, **kwargs)
