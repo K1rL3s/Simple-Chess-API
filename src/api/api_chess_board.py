@@ -27,10 +27,10 @@ def get_board_image() -> flask.Response:
     if isinstance(values, flask.Response):
         return values
 
-    fen_position, size, orientation, colors, last_move, coords, check = values
+    fen, size, orientation, colors, last_move, coords, check = values
 
     board_image: BytesIO = src.engine.chess_board.get_board_image(
-        fen_position=fen_position,
+        fen=fen,
         size=size,
         orientation=orientation,
         colors=colors,

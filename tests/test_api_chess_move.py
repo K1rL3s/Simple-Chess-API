@@ -3,6 +3,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from src.consts import RequestsParams
+
 BASE_URL = "http://127.0.0.1:5000/api/chess/move/"
 
 load_dotenv()
@@ -13,6 +15,7 @@ headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
 def test_move_with_user_move_and_prev_moves():
     params = {"user_move": "e2e4", "prev_moves": "d2d4;d7d5;b1c3;g8f6"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
@@ -27,31 +30,14 @@ def test_move_with_user_move_and_prev_moves():
     assert "check" in data
 
 
-def test_move_first_move_with_correct_orientation():
-    params = {"orientation": "b"}
-    response = requests.get(BASE_URL, params=params, headers=headers)
-    data = response.json()
-    assert 'message' in data
-    assert 'status_code' in data
-    data = data["response"]
-    assert response.status_code == 200
-    assert "stockfish_move" in data
-    assert "prev_moves" in data
-    assert "orientation" in data
-    assert data["orientation"] == "b"
-    assert "fen" in data
-    assert "end_type" in data
-    assert "check" in data
-
-
 def test_move_successful():
     params = {"user_move": "e2e4", "orientation": "w"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "stockfish_move" in data
     assert "prev_moves" in data
     assert "orientation" in data
@@ -64,11 +50,11 @@ def test_move_successful():
 def test_move_without_user_move():
     params = {"prev_moves": "e2e4;e7e5;g1f3;b8c6"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "stockfish_move" in data
     assert "prev_moves" in data
     assert "orientation" in data
@@ -118,7 +104,8 @@ def test_move_min_time():
 def test_move_max_time():
     params = {"user_move": "e2e4",
               "orientation": "w",
-              "max_time": 100}  # ~250+100ms
+              "min_time": 1,
+              "max_time": 100}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 200
     data = response.json()
@@ -131,6 +118,43 @@ def test_move_max_time():
     assert "fen" in data
     assert "end_type" in data
     assert "check" in data
+
+
+def test_move_first_move_with_correct_orientation():
+    for orientation in RequestsParams.BLACK.value:
+        params = {"orientation": orientation,
+                  "max_time": 1}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        data = response.json()
+        assert 'message' in data
+        assert 'status_code' in data
+        data = data["response"]
+        assert "stockfish_move" in data
+        assert "prev_moves" in data
+        assert "orientation" in data
+        assert "fen" in data
+        assert "end_type" in data
+        assert "check" in data
+
+
+def test_move_white_move_with_correct_orientation():
+    for orientation in RequestsParams.WHITE.value:
+        params = {"prev_moves": "e2e4;e7e5",
+                  "orientation": orientation,
+                  "max_time": 1}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        data = response.json()
+        assert 'message' in data
+        assert 'status_code' in data
+        data = data["response"]
+        assert "stockfish_move" in data
+        assert "prev_moves" in data
+        assert "orientation" in data
+        assert "fen" in data
+        assert "end_type" in data
+        assert "check" in data
 
 
 def test_move_with_invalid_max_time():

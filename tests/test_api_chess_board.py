@@ -4,6 +4,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
+from src.consts import RequestsParams
+
 IMAGES = Path(__file__).absolute().parent / 'board_images'
 BASE_URL = "http://127.0.0.1:5000/api/chess/board/"
 
@@ -31,27 +33,30 @@ def test_board_size():
 
 
 def test_board_orientation_b():
-    params = {"orientation": "b",  # black
-              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-              "size": 512}
-    response = requests.get(BASE_URL, params=params, headers=headers)
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/png"
-    with open(IMAGES / 'test_board_orientation_b.png', 'rb') as f:
-        assert f.read() == response.content
+    for orientation in RequestsParams.BLACK.value:
+        params = {"orientation": orientation,  # black
+                  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "size": 512}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/png"
+        with open(IMAGES / 'test_board_orientation_b.png', 'rb') as f:
+            assert f.read() == response.content
 
 
 def test_board_orientation_w_or_none():
-    params = {"orientation": "w",  # white
-              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-              "size": 512}
-    response = requests.get(BASE_URL, params=params, headers=headers)
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/png"
-    with open(IMAGES / 'test_board_orientation_w_or_none.png', 'rb') as f:
-        assert f.read() == response.content
+    for orientation in RequestsParams.WHITE.value:
+        params = {"orientation": orientation,
+                  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "size": 512}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/png"
+        with open(IMAGES / 'test_board_orientation_w_or_none.png', 'rb') as f:
+            assert f.read() == response.content
 
-    del params["orientation"]  # orientation is null
+    params = {"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "size": 512}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
@@ -60,27 +65,30 @@ def test_board_orientation_w_or_none():
 
 
 def test_board_coords_f():
-    params = {"coords": "f",  # without coords (false)
-              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-              "size": 512}
-    response = requests.get(BASE_URL, params=params, headers=headers)
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/png"
-    with open(IMAGES / 'test_board_coords_f.png', 'rb') as f:
-        assert f.read() == response.content
+    for coords in RequestsParams.NO.value:
+        params = {"coords": coords,
+                  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "size": 512}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/png"
+        with open(IMAGES / 'test_board_coords_f.png', 'rb') as f:
+            assert f.read() == response.content
 
 
 def test_board_coords_t_or_none():
-    params = {"coords": "t",  # with coords (true)
-              "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-              "size": 512}
-    response = requests.get(BASE_URL, params=params, headers=headers)
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/png"
-    with open(IMAGES / 'test_board_coords_t.png', 'rb') as f:
-        assert f.read() == response.content
+    for coords in RequestsParams.YES.value:
+        params = {"coords": coords,
+                  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "size": 512}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/png"
+        with open(IMAGES / 'test_board_coords_t.png', 'rb') as f:
+            assert f.read() == response.content
 
-    del params["coords"]  # coords is null
+    params = {"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "size": 512}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"

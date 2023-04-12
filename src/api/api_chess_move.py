@@ -44,14 +44,14 @@ def make_a_move() -> flask.Response:
     end_type, check = stockfish_engine.make_move(stockfish, stockfish_move, is_stockfish=True)
 
     prev_moves = ';'.join(filter(lambda x: x, (prev_moves, user_move, stockfish_move)))
-    end_fen_pos = stockfish.get_fen_position()
+    end_fen = stockfish.get_fen_position()
 
     return make_json_response(
         StatusCodes.OK, 'OK',
-        fen=end_fen_pos,
+        fen=end_fen,
         stockfish_move=stockfish_move,
         prev_moves=prev_moves,
-        orientation='w' if 'w' in end_fen_pos else 'b',
+        orientation='w' if 'w' in end_fen else 'b',
         end_type=end_type,
         check=check
     )

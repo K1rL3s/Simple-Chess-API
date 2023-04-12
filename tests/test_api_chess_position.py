@@ -3,6 +3,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from src.consts import RequestsParams
+
 BASE_URL = "http://127.0.0.1:5000/api/chess/position/"
 
 load_dotenv()
@@ -13,11 +15,11 @@ headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
 def test_position_with_fen():
     params = {"fen": "r1bqkbnr/pppppppp/2n5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert "who_win" in data
     assert "value" in data
@@ -29,11 +31,11 @@ def test_position_with_fen():
 def test_position_with_history():
     params = {"prev_moves": "e2e4;g8f6;f1c4"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert "who_win" in data
     assert "value" in data
@@ -48,11 +50,11 @@ def test_position_with_history():
 def test_position_without_engine():
     params = {"prev_moves": "e2e4;g8f6;f1c4", "with_engine": "f"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert "who_win" in data
     assert "value" in data
@@ -64,14 +66,21 @@ def test_position_without_engine():
     assert "fen" in data
 
 
+def test_position_yes_or_no_engine_param():
+    for yes_or_no in RequestsParams.YES_OR_NO.value:
+        params = {"prev_moves": "e2e4;g8f6;f1c4", "with_engine": yes_or_no}
+        response = requests.get(BASE_URL, params=params, headers=headers)
+        assert response.status_code == 200
+
+
 def test_position_white_win_by_checkmate():
     params = {"prev_moves": "e2e4;f7f6;d2d4;g7g5;d1h5"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert data["is_end"] is True
     assert "who_win" in data
@@ -88,11 +97,11 @@ def test_position_white_win_by_checkmate():
 def test_position_black_win_by_checkmate():
     params = {"fen": "r1b1kbnr/pp2p2p/B1n3p1/2pp3K/4pq2/8/PPPP1PPP/RNBQ2NR w kq - 0 9"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert data["is_end"] is True
     assert "who_win" in data
@@ -109,11 +118,11 @@ def test_position_black_win_by_checkmate():
 def test_position_stalemate():
     params = {"fen": "7k/8/6Q1/6K1/8/8/8/8 b - - 0 1"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert data["is_end"] is True
     assert "who_win" in data
@@ -130,11 +139,11 @@ def test_position_stalemate():
 def test_position_insufficient_material():
     params = {"fen": "7k/8/8/6K1/8/8/8/8 w - - 0 1"}
     response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
     data = response.json()
     assert 'message' in data
     assert 'status_code' in data
     data = data["response"]
-    assert response.status_code == 200
     assert "is_end" in data
     assert data["is_end"] is True
     assert "who_win" in data
@@ -148,25 +157,37 @@ def test_position_insufficient_material():
     assert "fen" in data
 
 
-def test_position_evaluation_with_invalid_fen():
+def test_position_with_invalid_fen():
     params = {"fen": "invalid_fen"}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
 
 
-def test_position_evaluation_without_params():
+def test_position_without_params():
     response = requests.get(BASE_URL, headers=headers)
     assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
 
 
-def test_position_evaluation_with_invalid_history():
+def test_position_with_invalid_history():
     params = {"prev_moves": "invalid_moves"}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
 
 
-def test_position_evaluation_with_invalid_engine():
+def test_position_with_invalid_engine():
     params = {"fen": "r1bqkbnr/pppppppp/2n5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1",
               "with_engine": "g"}
     response = requests.get(BASE_URL, params=params, headers=headers)
     assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data

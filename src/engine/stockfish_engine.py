@@ -1,7 +1,7 @@
 import stockfish
 import chess
 
-from src.consts import Config
+from src.consts import Config, TerminatorTypes
 from src.consts import engine_params, StatusCodes, Defaults
 from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
@@ -32,8 +32,8 @@ def get_stockfish(
     :return: stockfish.Stockfish.
     """
 
-    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(min_time, threads, depth, ram_hash,
-                                                                               skill_level, elo)
+    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(
+        min_time, threads, depth, ram_hash, skill_level, elo)
 
     new_params = engine_params.copy()
     new_params.update({
@@ -68,6 +68,7 @@ def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False
     :return: Состояние, по которому закончилась игра, или статус-код ошибки.
     """
 
+    # Движок может выдать пустую строку вместо хода, если игра закончилась
     if not is_stockfish and not engine.is_move_correct(move):
         return StatusCodes.INVALID_PARAMS.value
 
@@ -75,12 +76,12 @@ def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False
         engine.make_moves_from_current_position([move])
 
     terminator = is_game_over(engine.get_fen_position())
-    if terminator == chess.Termination.STALEMATE:
-        terminator = 'stalemate'
-    elif terminator == chess.Termination.CHECKMATE:
-        terminator = 'checkmate'
+    if terminator == chess.Termination.CHECKMATE:
+        terminator = TerminatorTypes.CHECKMATE.value
+    elif terminator == chess.Termination.STALEMATE:
+        terminator = TerminatorTypes.STALEMATE.value
     elif terminator == chess.Termination.INSUFFICIENT_MATERIAL:
-        terminator = 'insufficient_material'
+        terminator = TerminatorTypes.INSUFFICIENT_MATERIAL.value
     else:
         terminator = None
 

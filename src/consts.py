@@ -51,6 +51,21 @@ class StatusCodes(Enum):
     SERVER_ERROR = 500
 
 
+class RequestsParams(Enum):
+    YES = ('t', '1', 'true')
+    NO = ('f', '0', 'false')
+    YES_OR_NO = (*YES, *NO)
+    WHITE = ('w', 'white')
+    BLACK = ('b', 'black')
+    COLORS = (*WHITE, *BLACK)
+
+
+class TerminatorTypes(Enum):
+    CHECKMATE = 'checkmate'
+    STALEMATE = 'stalemate'
+    INSUFFICIENT_MATERIAL = 'insufficient_material'
+
+
 # http://kvetka.org/Stockfish_opt.shtml#slow_m
 engine_params = {
     "Debug Log File": "",

@@ -9,7 +9,7 @@ from src.utils.limitations import limit_board_params
 
 
 def get_board_image(
-        fen_position: str,
+        fen: str,
         size: int | None = Defaults.BOARD_IMAGE_SIZE.value,
         orientation: bool | None = True,
         colors: dict[str, str] = None,
@@ -20,7 +20,7 @@ def get_board_image(
     """
     Возвращает BytesIO объект с загруженным изображением шахматной доски.
 
-    :param fen_position: fen-позиция из stockfish.Stockfish.get_fen_position()
+    :param fen: fen-позиция из stockfish.Stockfish.get_fen_position()
     :param size: Размер стороны квадратной картинки.
     :param orientation: Какие фигуры внизу. True - белые.
     :param colors: Словарь типа "тип клетки": "#цвет"
@@ -45,7 +45,7 @@ def get_board_image(
     """
 
     try:
-        board = chess.Board(fen_position)
+        board = chess.Board(fen)
     except ValueError:
         return None
 

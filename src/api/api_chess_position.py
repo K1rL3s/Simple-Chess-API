@@ -26,7 +26,7 @@ def get_position_score() -> flask.Response:
     if isinstance(values, flask.Response):
         return values
 
-    prev_moves, fen_position, with_engine = values
+    prev_moves, fen, with_engine = values
 
     stockfish = stockfish_engine.get_stockfish(
         previous_moves=prev_moves,
@@ -36,15 +36,15 @@ def get_position_score() -> flask.Response:
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   f'"prev_moves" param has illegal moves')
 
-    if fen_position:
+    if fen:
         try:
-            chess.Board(fen_position)
-            stockfish.set_fen_position(fen_position)
+            chess.Board(fen)
+            stockfish.set_fen_position(fen)
         except ValueError:
             return make_json_response(StatusCodes.INVALID_PARAMS,
                                       '"fen" param is invalid')
 
-    board = chess.Board(fen_position := stockfish.get_fen_position())
+    board = chess.Board(fen := stockfish.get_fen_position())
 
     is_end = False
     who_win = None
@@ -52,7 +52,7 @@ def get_position_score() -> flask.Response:
     value = None
     if board.is_checkmate():
         is_end = True
-        who_win = 'b' if 'w' in fen_position else 'w'
+        who_win = 'b' if 'w' in fen else 'w'
         end_type = "checkmate"
         value = 0
     elif board.is_stalemate():
@@ -86,5 +86,5 @@ def get_position_score() -> flask.Response:
         end_type=end_type,
         value=value,
         wdl=wdl,
-        fen=fen_position,
+        fen=fen,
     )
