@@ -129,6 +129,16 @@ def test_board_check():
         assert f.read() == response.content
 
 
+def test_board_impossible_fen():
+    params = {"fen": "rnb2bnr/pppppppp/8/3Qk3/3qK3/8/PPPPPPPP/RNB2BNR w HAha - 0 1",
+              "size": 512}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
+    with open(IMAGES / 'test_board_impossible_fen.png', 'rb') as f:
+        assert f.read() == response.content
+
+
 def test_board_invalid_fen_or_none():
     params = {"fen": "invalid_fen_string"}
     response = requests.get(BASE_URL, params=params, headers=headers)
