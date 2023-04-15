@@ -32,7 +32,7 @@ def get_position_score() -> flask.Response:
         previous_moves=prev_moves,
         threads=Limits.MAX_THREADS.value,
     )
-    if stockfish is None:
+    if stockfish == StatusCodes.INVALID_PARAMS:
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   f'"prev_moves" param has illegal moves')
 

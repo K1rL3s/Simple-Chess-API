@@ -18,7 +18,7 @@ def get_stockfish(
         skill_level: int = Defaults.SKILL_LEVEL.value,
         elo: int = Defaults.ELO.value,
         previous_moves: str = None
-) -> stockfish.Stockfish | None:
+) -> stockfish.Stockfish | StatusCodes:
     """
     Возвращает instance stockfish.Stockfish с указанными параметрами.
 
@@ -52,13 +52,17 @@ def get_stockfish(
     if previous_moves:
         for move in previous_moves.split(';'):
             answer = make_move(engine, move)
-            if answer == StatusCodes.INVALID_PARAMS.value:
-                return None
+            if answer == StatusCodes.INVALID_PARAMS:
+                return answer
 
     return engine
 
 
-def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False) -> tuple[str | None, str | None]:
+def make_move(
+        engine: stockfish.Stockfish,
+        move: str,
+        is_stockfish: bool = False
+) -> tuple[str | None, str | None] | StatusCodes:
     """
     Делатель хода. Обновляет engine, делая новый ход из текущего положения.
 
@@ -70,7 +74,7 @@ def make_move(engine: stockfish.Stockfish, move: str, is_stockfish: bool = False
 
     # Движок может выдать пустую строку вместо хода, если игра закончилась
     if not is_stockfish and not engine.is_move_correct(move):
-        return StatusCodes.INVALID_PARAMS.value
+        return StatusCodes.INVALID_PARAMS
 
     if move:
         engine.make_moves_from_current_position([move])

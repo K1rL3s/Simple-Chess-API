@@ -28,19 +28,20 @@ def make_a_move() -> flask.Response:
 
     # Инициализация движка для игры, часть игры пользователя
     stockfish = stockfish_engine.get_stockfish(min_time, threads, depth, ram_hash, skill_level, elo, prev_moves)
-    if stockfish is None:
+    if stockfish == StatusCodes.INVALID_PARAMS:
         return make_json_response(StatusCodes.INVALID_PARAMS,
                                   f'"prev_moves" param has illegal moves')
 
     if user_move:
         answer = stockfish_engine.make_move(stockfish, user_move)
-        if answer == StatusCodes.INVALID_PARAMS.value:
+        if answer == StatusCodes.INVALID_PARAMS:
             return make_json_response(StatusCodes.INVALID_PARAMS,
                                       f'"{user_move}" is illegal move')
 
     # Часть игры машины
     max_time = max(min(min_time, Limits.MAX_THINK_MS.value), Limits.MIN_THINK_MS.value)  # min_time в limitations
     stockfish_move = stockfish.get_best_move_time(max_time)
+    # 100% не вернёт ошибку
     end_type, check = stockfish_engine.make_move(stockfish, stockfish_move, is_stockfish=True)
 
     prev_moves = ';'.join(filter(lambda x: x, (prev_moves, user_move, stockfish_move)))

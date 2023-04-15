@@ -197,6 +197,15 @@ def test_move_invalid_user_move_char():
     assert "status_code" in data
 
 
+def test_move_invalid_prev_moves():
+    params = {"prev_moves": "e2e4;e8e5;g1f3;b8c6"}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    assert response.status_code == 400
+    data = response.json()
+    assert "message" in data
+    assert "status_code" in data
+
+
 def test_move_with_invalid_orientation():
     params = {"user_move": "e2e4", "orientation": "invalid"}
     response = requests.get(BASE_URL, params=params, headers=headers)

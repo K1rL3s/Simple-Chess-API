@@ -38,7 +38,11 @@ def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
 
             if output:
                 logger_.log(level, f'Результат "{function_name}" (result={result})')
-            info = f"{flask.request.remote_addr:<15} | {f'{function_name} took {total:.3f} secs':<40}"
+
+            request = getattr(flask, 'request', None)
+            remote_addr = request.remote_addr if isinstance(request, flask.Request) else 'Python'
+            info = f"{remote_addr:<15} | {f'{function_name} took {total:.3f} secs':<40}"
+
             if isinstance(result, flask.Response):
                 info += f' | {result.status_code} - {message}'
 
