@@ -23,7 +23,7 @@ def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> di
 
 
 @blueprint.route('/api/chess/limits/', methods=['GET'])
-@log(entry=False, output=False, level='INFO')
+@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
 @requires_auth
 @cache
 def api_chess_limits():

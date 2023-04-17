@@ -42,6 +42,8 @@ pip install -r ./requirements.txt
 STOCKFISH_ENGINE_PATH=<path-to-engine-exe>
 API_AUTH_KEY=<token> (без авторизации - оставить пустым)
 SECRET_KEY=<csrf-token>
+HOST=<127.0.0.1>
+PORT=<1-65535>
 ```
 
 6. Запустить сервер:

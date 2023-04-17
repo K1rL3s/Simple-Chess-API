@@ -9,11 +9,21 @@ from src.consts import StatusCodes
 from src.utils.abort import abort
 
 
-def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
+def log(
+        entry: bool = True,
+        output: bool = True,
+        with_time: bool = True,
+        with_entry_args: bool = True,
+        with_output_args: bool = True,
+        level: str = "DEBUG"
+):
     """
     Логгер выполнения функции.
     :param entry: Выводить ли входные данные.
     :param output: Выводить ли выходные данные.
+    :param with_time: Выводить ли время выполнения (и flask.Response).
+    :param with_entry_args: Выводить ли входные аргументы.
+    :param with_output_args: Выводить ли выходные аргументы.
     :param level: Уровень отображения.
     """
 
@@ -25,10 +35,13 @@ def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
             logger_ = logger.opt(depth=1)
 
             if entry:
-                logger_.log(level, f'Вызов "{function_name}" (args={args}, kwargs={kwargs})')
+                message = f'Вызов "{function_name}"'
+                if with_entry_args:
+                    message += f' ({args=}, {kwargs=})'
+                logger_.log(level, message)
 
             start = time()
-            result: flask.Response = func(*args, **kwargs)
+            result = func(*args, **kwargs)
             total = time() - start
 
             try:
@@ -37,16 +50,20 @@ def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
                 message = None
 
             if output:
-                logger_.log(level, f'Результат "{function_name}" (result={result})')
+                message = f'Конец "{function_name}"'
+                if with_output_args:
+                    message += f' ({result=})'
+                logger_.log(level, message)
 
-            request = getattr(flask, 'request', None)
-            remote_addr = request.remote_addr if isinstance(request, flask.Request) else 'Python'
-            info = f"{remote_addr:<15} | {f'{function_name} took {total:.3f} secs':<40}"
+            if with_time:
+                request = getattr(flask, 'request', None)
+                remote_addr = request.remote_addr if isinstance(request, flask.Request) else 'Python'
+                info = f"{remote_addr:<15} | {f'{function_name} took {total:.3f} secs':<40}"
 
-            if isinstance(result, flask.Response):
-                info += f' | {result.status_code} - {message}'
+                if isinstance(result, flask.Response):
+                    info += f' | {result.status_code} - {message}'
 
-            logger_.log(level, info.strip())
+                logger_.log(level, info.strip())
 
             return result
 

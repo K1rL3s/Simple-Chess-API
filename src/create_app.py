@@ -8,7 +8,7 @@ from src.consts import Config
 from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess, api_chess_limits
 from src.errors_handlers import register_error_handlers
 
-abs_path = Path().absolute()
+abs_path = Path(__file__).parent.parent.absolute()
 logger.add(
     abs_path / 'logs' / 'logs.log',
     format="{time:YYYY-MM-DD HH:mm:ss.SSS} {level:<7} {message}",

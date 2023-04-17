@@ -11,6 +11,8 @@ class Config:
     ENGINE_PATH = os.environ['STOCKFISH_ENGINE_PATH']
     # В `.env` оставить пустым или не писать вообще, если без авторизации
     API_AUTH_KEY = os.environ.get("API_AUTH_KEY")
+    HOST = os.environ.get('HOST') or '127.0.0.1'
+    PORT = int(os.environ.get("PORT") or 5000)
 
 
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения

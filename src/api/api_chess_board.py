@@ -15,7 +15,7 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/board/', methods=['GET'])
-@log(entry=False, output=False, level='INFO')
+@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
 @requires_auth
 def get_board_image() -> flask.Response:
     """

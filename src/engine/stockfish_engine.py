@@ -9,7 +9,7 @@ from src.utils.limitations import limit_engine_params
 engine_path = Config.ENGINE_PATH
 
 
-@log(entry=False, output=False, level='DEBUG')
+@log(entry=True, output=True, with_entry_args=True, with_output_args=True, with_time=True, level='DEBUG')
 def get_stockfish(
         min_time: int = Defaults.THINK_MS.value,
         threads: int = Defaults.THREADS.value,
