@@ -2,11 +2,11 @@ import chess
 import flask
 
 from src.consts import Defaults, StatusCodes, Limits, RequestsParams
-from src.utils.make_json_response import make_json_response
+from src.utils.params_classes import BoardParams, MoveParams, PositionParams
+from src.utils.abort import abort
 
 
-def handle_move_params(
-) -> tuple[str, str, str, int, int, int, int, int, int, int] | flask.Response:
+def handle_move_params() -> MoveParams:
     """
     Обработчик параметров на запрос делания хода.
     """
@@ -24,44 +24,45 @@ def handle_move_params(
         skill_level = int(data.get('skill_level', Defaults.SKILL_LEVEL.value))
         elo = int(data.get('elo', Defaults.ELO.value))
     except Exception as e:
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  str(e))
+        return abort(StatusCodes.INVALID_PARAMS, str(e))
 
     # Обработка некорректных данных
     if not user_move and not prev_moves and orientation not in RequestsParams.BLACK.value:
         # Если не задан ход, раньше ходов не было и игрок не играет за чёрных
         # Нужно, чтобы машина играла белыми (сделала первый ход)
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  '"user_move" param is invalid')
+        abort(StatusCodes.INVALID_PARAMS, '"user_move" param is invalid')
 
     if min_time > max_time:
         max_time = min_time
 
     if orientation not in RequestsParams.COLORS.value:
-        return make_json_response(
+        abort(
             StatusCodes.INVALID_PARAMS,
             f'"orientation" param is invalid. It must be in {RequestsParams.COLORS.value}'
         )
     orientation = 'w' if orientation in RequestsParams.WHITE.value else 'b'
 
     if len(prev_moves) > 4 and ';' not in prev_moves:
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  '"prev_moves" param is invalid. Between moves must be ";".')
+        abort(
+            StatusCodes.INVALID_PARAMS,
+            '"prev_moves" param is invalid. Between moves must be ";".'
+        )
 
-    return (user_move, prev_moves, orientation, min_time, max_time,
-            threads, depth, ram_hash, skill_level, elo)
+    return MoveParams(
+        user_move=user_move,
+        prev_moves=prev_moves,
+        orientation=orientation,
+        min_time=min_time,
+        max_time=max_time,
+        threads=threads,
+        depth=depth,
+        ram_hash=ram_hash,
+        skill_level=skill_level,
+        elo=elo,
+    )
 
 
-def handle_board_params(
-) -> tuple[
-         str | None,
-         int | None,
-         str | None,
-         dict[str, str] | None,
-         chess.Move | None,
-         bool,
-         chess.Square | None
-     ] | flask.Response:
+def handle_board_params() -> BoardParams:
     """
     Обработчик параметров на запрос рисования доски.
     """
@@ -76,15 +77,13 @@ def handle_board_params(
         coords = data.get('coords', 't').lower()
         check = data.get('check', '').upper()
     except Exception as e:
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  str(e))
+        return abort(StatusCodes.INVALID_PARAMS, str(e))
 
     if not fen:
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  '"fen" param is invalid')
+        abort(StatusCodes.INVALID_PARAMS, '"fen" param is invalid')
 
     if orientation not in RequestsParams.COLORS.value:
-        return make_json_response(
+        abort(
             StatusCodes.INVALID_PARAMS,
             f'"orientation" param is invalid. It must be in {RequestsParams.COLORS.value}'
         )
@@ -97,7 +96,7 @@ def handle_board_params(
             colors = {square: f'#{color}' for square, color in
                       [pair.split('-') for pair in colors.split(';')]}
         except ValueError:
-            return make_json_response(
+            abort(
                 StatusCodes.INVALID_PARAMS,
                 '"colors" param is invalid. Between square-type and colors must be "-", '
                 'between pairs must be ";"'
@@ -114,7 +113,7 @@ def handle_board_params(
         last_move = None
 
     if coords not in RequestsParams.YES_OR_NO.value:
-        return make_json_response(
+        abort(
             StatusCodes.INVALID_PARAMS,
             f'"coords" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
         )
@@ -122,10 +121,18 @@ def handle_board_params(
 
     check = getattr(chess, check, None)
 
-    return fen, size, orientation, colors, last_move, coords, check
+    return BoardParams(
+        fen=fen,
+        size=size,
+        orientation=orientation,
+        colors=colors,
+        last_move=last_move,
+        coords=coords,
+        check=check,
+    )
 
 
-def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Response:
+def handle_position_params() -> PositionParams:
     """
     Обработчик параметров на оценку позиции.
     """
@@ -136,18 +143,23 @@ def handle_position_params() -> tuple[str | None, str | None, bool] | flask.Resp
         fen = data.get('fen', '')
         with_engine = data.get('with_engine', 't').lower()
     except Exception as e:
-        return make_json_response(StatusCodes.INVALID_PARAMS,
-                                  str(e))
+        return abort(StatusCodes.INVALID_PARAMS, str(e))
 
     if not prev_moves and not fen:
-        return make_json_response(StatusCodes.INVALID_PARAMS.value,
-                                  '"prev_moves" or "fen" param is required')
+        abort(
+            StatusCodes.INVALID_PARAMS.value,
+            '"prev_moves" or "fen" param is required'
+        )
 
     if with_engine not in RequestsParams.YES_OR_NO.value:
-        return make_json_response(
+        abort(
             StatusCodes.INVALID_PARAMS,
             f'"with_engine" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
         )
     with_engine = with_engine in RequestsParams.YES.value
 
-    return prev_moves, fen, with_engine
+    return PositionParams(
+        prev_moves=prev_moves,
+        fen=fen,
+        with_engine=with_engine,
+    )

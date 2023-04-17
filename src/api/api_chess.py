@@ -3,7 +3,6 @@ import flask
 blueprint = flask.Blueprint(
     'api/chess',
     __name__,
-    template_folder='templates'
 )
 
 

@@ -6,7 +6,7 @@ from loguru import logger
 
 from src.consts import Config
 from src.consts import StatusCodes
-from src.utils.make_json_response import make_json_response
+from src.utils.abort import abort
 
 
 def log(entry: bool = True, output: bool = True, level: str = "DEBUG"):
@@ -67,7 +67,8 @@ def requires_auth(func):
         auth_header = flask.request.headers.get('Authorization', '')
 
         if Config.API_AUTH_KEY and auth_header != Config.API_AUTH_KEY:
-            return make_json_response(StatusCodes.NOT_AUTH, 'Authorization key missing or invalid')
+            abort(StatusCodes.NOT_AUTH, 'Authorization key missing or invalid')
+            return
 
         return func(*args, **kwargs)
 

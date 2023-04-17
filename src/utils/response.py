@@ -5,7 +5,7 @@ import flask
 from src.consts import StatusCodes
 
 
-def make_json_response(
+def flask_json_response(
         status_code: int | StatusCodes,
         message: str,
         **params
@@ -30,7 +30,7 @@ def make_json_response(
         "message": str(message),
     }
     if params:
-        data["response"] = {**params}
+        data["response"] = params
 
     response = flask.Flask.response_class(
         response=json.dumps(data),

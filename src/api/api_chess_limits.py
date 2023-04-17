@@ -5,12 +5,11 @@ import flask
 
 from src.consts import Limits, Defaults, StatusCodes
 from src.utils.decorators import log, requires_auth
-from src.utils.make_json_response import make_json_response
+from src.utils.response import flask_json_response
 
 blueprint = flask.Blueprint(
     'api/chess/limits',
     __name__,
-    template_folder='templates'
 )
 
 
@@ -33,7 +32,7 @@ def api_chess_limits():
     Если где-то переименовать ключ (параметр), то и тут надо, а то будет не круто.
     """
 
-    return make_json_response(
+    return flask_json_response(
         StatusCodes.OK, 'OK',
         min_time=to_dict(
             Limits.MIN_THINK_MS,

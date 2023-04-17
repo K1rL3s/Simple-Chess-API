@@ -17,7 +17,7 @@ def get_stockfish(
         ram_hash: int = Defaults.RAM_HASH.value,
         skill_level: int = Defaults.SKILL_LEVEL.value,
         elo: int = Defaults.ELO.value,
-        previous_moves: str = None
+        prev_moves: str = None
 ) -> stockfish.Stockfish | StatusCodes:
     """
     Возвращает instance stockfish.Stockfish с указанными параметрами.
@@ -28,12 +28,13 @@ def get_stockfish(
     :param ram_hash: Кол-во оперативный памяти в МБ. Должно быть степенью двойки.
     :param skill_level: Уровень скилла от 1 до 20.
     :param elo: Шахматный рейтинг Эло.
-    :param previous_moves: Предыдущие ходы в формате "e2e4;e7e5;...".
+    :param prev_moves: Предыдущие ходы в формате "e2e4;e7e5;...".
     :return: stockfish.Stockfish.
     """
 
     min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(
-        min_time, threads, depth, ram_hash, skill_level, elo)
+        min_time, threads, depth, ram_hash, skill_level, elo
+    )
 
     new_params = engine_params.copy()
     new_params.update({
@@ -49,8 +50,8 @@ def get_stockfish(
         parameters=new_params
     )
 
-    if previous_moves:
-        for move in previous_moves.split(';'):
+    if prev_moves:
+        for move in prev_moves.split(';'):
             answer = make_move(engine, move)
             if answer == StatusCodes.INVALID_PARAMS:
                 return answer
