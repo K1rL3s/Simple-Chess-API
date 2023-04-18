@@ -6,6 +6,7 @@ from loguru import logger
 
 from src.consts import Config
 from src.api import api_chess_docs, api_chess_move, api_chess_board, api_chess_position, api_chess, api_chess_limits
+from src.engine.stockfish_engine import BoxWithEngines
 from src.errors_handlers import register_error_handlers
 
 abs_path = Path(__file__).parent.parent.absolute()
@@ -33,3 +34,8 @@ def init_app():
     register_error_handlers(app)
 
     return app
+
+
+def init_box_with_engines() -> None:
+    Config.BOX = BoxWithEngines(Config.PREPARED_ENGINES)
+    logger.info(f"{Config.PREPARED_ENGINES} chess engines prepared!")

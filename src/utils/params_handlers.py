@@ -23,6 +23,7 @@ def handle_move_params() -> MoveParams:
         ram_hash = int(data.get('ram_hash', Defaults.RAM_HASH.value))
         skill_level = int(data.get('skill_level', Defaults.SKILL_LEVEL.value))
         elo = int(data.get('elo', Defaults.ELO.value))
+        prepared = data.get('prepared', 'f').lower()
     except Exception as e:
         return abort(StatusCodes.INVALID_PARAMS, str(e))
 
@@ -48,6 +49,13 @@ def handle_move_params() -> MoveParams:
             '"prev_moves" param is invalid. Between moves must be ";".'
         )
 
+    if prepared not in RequestsParams.YES_OR_NO.value:
+        abort(
+            StatusCodes.INVALID_PARAMS,
+            f'"prepared" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+        )
+    prepared = prepared in RequestsParams.YES.value
+
     return MoveParams(
         user_move=user_move,
         prev_moves=prev_moves,
@@ -59,6 +67,7 @@ def handle_move_params() -> MoveParams:
         ram_hash=ram_hash,
         skill_level=skill_level,
         elo=elo,
+        prepared=prepared,
     )
 
 
@@ -142,6 +151,7 @@ def handle_position_params() -> PositionParams:
         prev_moves = data.get('prev_moves', '').lower()
         fen = data.get('fen', '')
         with_engine = data.get('with_engine', 't').lower()
+        prepared = data.get('prepared', 'f').lower()
     except Exception as e:
         return abort(StatusCodes.INVALID_PARAMS, str(e))
 
@@ -158,8 +168,16 @@ def handle_position_params() -> PositionParams:
         )
     with_engine = with_engine in RequestsParams.YES.value
 
+    if prepared not in RequestsParams.YES_OR_NO.value:
+        abort(
+            StatusCodes.INVALID_PARAMS,
+            f'"prepared" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+        )
+    prepared = prepared in RequestsParams.YES.value
+
     return PositionParams(
         prev_moves=prev_moves,
         fen=fen,
         with_engine=with_engine,
+        prepared=prepared,
     )

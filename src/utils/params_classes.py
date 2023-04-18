@@ -14,6 +14,7 @@ class MoveParams(NamedTuple):
     ram_hash: int
     skill_level: int
     elo: int
+    prepared: bool
 
 
 class BoardParams(NamedTuple):
@@ -30,3 +31,4 @@ class PositionParams(NamedTuple):
     prev_moves: str | None
     fen: str | None
     with_engine: bool
+    prepared: bool

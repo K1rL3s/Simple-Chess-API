@@ -1,15 +1,70 @@
-import stockfish
-import chess
+import contextlib
+import queue
 
-from src.consts import Config, TerminatorTypes
-from src.consts import engine_params, StatusCodes, Defaults
+import chess
+from loguru import logger
+from stockfish import Stockfish
+
+from src.consts import TerminatorTypes, Config, engine_params, Defaults, StatusCodes
+from src.utils.abort import abort, AbortError
 from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
 
-engine_path = Config.ENGINE_PATH
+
+class BoxWithEngines:
+    def __init__(self, n: int):
+        """
+        "Коробка с движками", которая занимается распределение движков по потокам.
+        """
+        self._worker_queue = queue.Queue()
+
+        for i in range(n):
+            self._worker_queue.put(
+                Stockfish(
+                    path=Config.ENGINE_PATH,
+                    depth=Defaults.DEPTH.value,
+                    parameters=engine_params
+                )
+            )
+
+    @contextlib.contextmanager
+    def get_engine(
+            self,
+            prev_moves: str | None = None,
+            prepared: bool | None = False,
+            *args,
+            **kwargs,
+    ) -> Stockfish:
+        """
+        Контекстный менеджер, гарантирующий, что движок вернётся в очередь.
+        Если не будет доступных движков, то мы просто будем ждать на .get(block=True).
+        Аргументы к функции `get_stockfish
+        """
+
+        if not prepared:
+            yield get_stockfish(*args, **kwargs, prev_moves=prev_moves)
+            return
+
+        if not Config.PREPARED_ENGINES:
+            return abort(StatusCodes.NO_PREPARED_ENGINES, 'There are no prepared engines on server')
+
+        engine = self._worker_queue.get(block=True)
+        try:
+            reset_params(engine)
+            set_position_by_moves(engine, prev_moves)
+            yield engine
+        except AbortError as e:  # Если суета с отменой обработки, то движка это не касается
+            raise e
+        except Exception:  # noqa
+            logger.error('Error on engine processing', exc_info=True)
+        finally:
+            self._worker_queue.put(engine)
 
 
-@log(entry=True, output=True, with_entry_args=True, with_output_args=True, with_time=True, level='DEBUG')
+
+@log(entry=True, output=True,
+     with_entry_args=True, with_output_args=True,
+     with_time=True, level='DEBUG')
 def get_stockfish(
         min_time: int = Defaults.THINK_MS.value,
         threads: int = Defaults.THREADS.value,
@@ -18,7 +73,7 @@ def get_stockfish(
         skill_level: int = Defaults.SKILL_LEVEL.value,
         elo: int = Defaults.ELO.value,
         prev_moves: str = None
-) -> stockfish.Stockfish | StatusCodes:
+) -> Stockfish | StatusCodes:
     """
     Возвращает instance stockfish.Stockfish с указанными параметрами.
 
@@ -44,23 +99,31 @@ def get_stockfish(
         "Skill Level": skill_level,
         "UCI_Elo": elo
     })
-    engine = stockfish.Stockfish(
+    engine = Stockfish(
         path=Config.ENGINE_PATH,
         depth=depth,
         parameters=new_params
     )
 
-    if prev_moves:
-        for move in prev_moves.split(';'):
-            answer = make_move(engine, move)
-            if answer == StatusCodes.INVALID_PARAMS:
-                return answer
+    set_position_by_moves(engine, prev_moves)
 
     return engine
 
 
+def set_position_by_moves(engine: Stockfish, prev_moves: str | None = None) -> None:
+    if prev_moves:
+        for move in prev_moves.split(';'):
+            answer = make_move(engine, move)
+            if answer == StatusCodes.INVALID_PARAMS:
+                abort(StatusCodes.INVALID_PARAMS, '"prev_moves" param has illegal moves')
+
+
+def reset_params(engine: Stockfish) -> None:
+    engine.set_fen_position(Config.START_FEN)
+
+
 def make_move(
-        engine: stockfish.Stockfish,
+        engine: Stockfish,
         move: str,
         is_stockfish: bool = False
 ) -> tuple[str | None, str | None] | StatusCodes:

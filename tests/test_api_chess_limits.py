@@ -9,7 +9,7 @@ BASE_URL = "http://127.0.0.1:5000/api/chess/limits/"
 
 load_dotenv()
 
-headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
+headers = {"Authorization": os.getenv("API_AUTH_KEY")}
 
 
 def test_limits():

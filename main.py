@@ -7,6 +7,8 @@ from src.consts import Config
 
 def main():
     app = create_app.init_app()
+    create_app.init_box_with_engines()
+
     logger.info(f'Running a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}')
     serve(app, host=Config.HOST, port=Config.PORT)
     logger.info(f'Stop a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}')

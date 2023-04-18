@@ -10,6 +10,7 @@ BASE_URL = "http://127.0.0.1:5000/api/chess/position/"
 load_dotenv()
 
 headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
+PREPARED_ENGINES = int(os.getenv("PREPARED_ENGINES") or 0)
 
 
 def test_position_with_fen():
@@ -175,6 +176,64 @@ def test_position_impossible_fen():
     assert data["end_type"] == 'checkmate'
     assert "wdl" in data
     assert data["wdl"] == [0, 0, 1000]
+    assert "fen" in data
+
+
+def test_position_fen_prepared_engine():
+    params = {"fen": "r1b1kbnr/pp2p2p/B1n3p1/2pp3K/4pq2/8/PPPP1PPP/RNBQ2NR w kq - 0 9",
+              "prepared": "1"}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    data = response.json()
+
+    if not PREPARED_ENGINES:  # Если не установлены движки, то должна быть ошибка
+        assert response.status_code == 409
+        assert "message" in data
+        assert "status_code" in data
+        return
+
+    assert response.status_code == 200
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "is_end" in data
+    assert data["is_end"] is True
+    assert "who_win" in data
+    assert data["who_win"] == 'b'
+    assert "value" in data
+    assert data["value"] == 0
+    assert 'end_type' in data
+    assert data["end_type"] == "checkmate"
+    assert "wdl" in data
+    assert data["wdl"] is None
+    assert "fen" in data
+
+
+def test_position_prev_moves_prepared_engine():
+    params = {"prev_moves": "e2e4;f7f6;d2d4;g7g5;d1h5",
+              "prepared": "1"}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    data = response.json()
+
+    if not PREPARED_ENGINES:  # Если не установлены движки, то должна быть ошибка
+        assert response.status_code == 409
+        assert "message" in data
+        assert "status_code" in data
+        return
+
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "is_end" in data
+    assert data["is_end"] is True
+    assert "who_win" in data
+    assert data["who_win"] == 'w'
+    assert "value" in data
+    assert data["value"] == 0
+    assert 'end_type' in data
+    assert data["end_type"] == "checkmate"
+    assert "wdl" in data
+    assert data["wdl"] is None
     assert "fen" in data
 
 

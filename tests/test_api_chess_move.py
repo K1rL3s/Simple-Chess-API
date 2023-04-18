@@ -9,7 +9,8 @@ BASE_URL = "http://127.0.0.1:5000/api/chess/move/"
 
 load_dotenv()
 
-headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
+headers = {"Authorization": os.getenv("API_AUTH_KEY")}
+PREPARED_ENGINES = int(os.getenv("PREPARED_ENGINES") or 0)
 
 
 def test_move_with_user_move_and_prev_moves():
@@ -155,6 +156,56 @@ def test_move_white_move_with_correct_orientation():
         assert "fen" in data
         assert "end_type" in data
         assert "check" in data
+
+
+def test_move_with_prepared_engine_user_move():
+    params = {"prev_moves": "e2e4",
+              "prepared": "1"}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    data = response.json()
+
+    if not PREPARED_ENGINES:  # Если не установлены движки, то должна быть ошибка
+        assert response.status_code == 409
+        assert "message" in data
+        assert "status_code" in data
+        return
+
+    assert response.status_code == 200
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "stockfish_move" in data
+    assert "prev_moves" in data
+    assert "orientation" in data
+    assert "fen" in data
+    assert "end_type" in data
+    assert "check" in data
+
+
+def test_move_with_prepared_engine_prev_moves():
+    params = {"prev_moves": "e2e4;f7f6;d2d4;g7g5",
+              "prepared": "1"}
+    response = requests.get(BASE_URL, params=params, headers=headers)
+    data = response.json()
+
+    if not PREPARED_ENGINES:  # Если не установлены движки, то должна быть ошибка
+        assert response.status_code == 409
+        assert "message" in data
+        assert "status_code" in data
+        return
+
+    assert response.status_code == 200
+    data = response.json()
+    assert 'message' in data
+    assert 'status_code' in data
+    data = data["response"]
+    assert "stockfish_move" in data
+    assert "prev_moves" in data
+    assert "orientation" in data
+    assert "fen" in data
+    assert "end_type" in data
+    assert "check" in data
 
 
 def test_move_with_invalid_max_time():

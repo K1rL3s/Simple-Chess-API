@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_URL = "http://127.0.0.1:5000/api/chess/"
-API_AUTH_KEY = os.environ.get("API_AUTH_KEY")
+API_AUTH_KEY = os.getenv("API_AUTH_KEY")
 
 
 def test_authorization():
