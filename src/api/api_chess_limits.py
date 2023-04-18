@@ -15,6 +15,10 @@ blueprint = flask.Blueprint(
 
 @cache
 def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> dict[str, int]:
+    """
+    Чтобы не писать эти условия в роуте ниже.
+    """
+
     return {
         "min": minimum if isinstance(minimum, int) else minimum.value,
         "default": default if isinstance(default, int) else default.value,

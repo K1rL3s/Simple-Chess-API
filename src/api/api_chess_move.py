@@ -18,7 +18,8 @@ blueprint = flask.Blueprint(
 @requires_auth
 def make_a_move() -> flask.Response:
     """
-    "Генератор" шахматных ходов.
+    Обработчик делания хода, "генератор" шахматных ходов.
+    Ещё может вернуть, закончилась ли игра.
     """
 
     params = handle_move_params()

@@ -15,7 +15,10 @@ class BoxWithEngines:
     def __init__(self, n: int):
         """
         "Коробка с движками", которая занимается распределение движков по потокам.
+
+        :param n: Сколько движков хранить в очереди.
         """
+
         self._worker_queue = queue.Queue()
 
         for i in range(n):
@@ -38,7 +41,7 @@ class BoxWithEngines:
         """
         Контекстный менеджер, гарантирующий, что движок вернётся в очередь.
         Если не будет доступных движков, то мы просто будем ждать на .get(block=True).
-        Аргументы к функции `get_stockfish
+        Аргументы к функции `get_stockfish`.
         """
 
         if not prepared:

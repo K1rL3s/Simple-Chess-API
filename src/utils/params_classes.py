@@ -4,6 +4,9 @@ from chess import Move
 
 
 class MoveParams(NamedTuple):
+    """
+    Параметры для роута с "генерацией" ходов.
+    """
     user_move: str
     prev_moves: str
     orientation: str
@@ -18,6 +21,9 @@ class MoveParams(NamedTuple):
 
 
 class BoardParams(NamedTuple):
+    """
+    Параметры для роута с изображением доски.
+    """
     fen: str
     size: int
     orientation: bool
@@ -28,6 +34,9 @@ class BoardParams(NamedTuple):
 
 
 class PositionParams(NamedTuple):
+    """
+    Параметры для роута с оценкой позиции.
+    """
     prev_moves: str | None
     fen: str | None
     with_engine: bool

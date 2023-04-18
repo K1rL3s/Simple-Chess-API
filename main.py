@@ -6,6 +6,9 @@ from src.consts import Config
 
 
 def main():
+    """
+    Ищите комментарии в коде и readme.md! :)
+    """
     app = create_app.init_app()
     create_app.init_box_with_engines()
 

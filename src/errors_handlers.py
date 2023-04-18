@@ -9,6 +9,9 @@ from src.utils.response import flask_json_response
 
 # @app.errorhandler(StatusCodes.NOT_FOUND.value)
 def not_found(_):
+    """
+    Обработчик 404 ошибки Flask'а.
+    """
     return flask_json_response(
         StatusCodes.NOT_FOUND.value,
         'Not found'
@@ -16,16 +19,22 @@ def not_found(_):
 
 
 # @app.errorhandler(StatusCodes.INVALID_PARAMS.value)
-def bad_request(_):
+def bad_request(error):
+    """
+    Не уверен, используется ли оно вообще.
+    """
     return flask_json_response(
         StatusCodes.INVALID_PARAMS,
-        'Bad Request'
+        'Bad Request ' + str(error)
     )
 
 
 # @app.errorhandler(AbortError)
 @log(entry=False, output=False, with_entry_args=False, with_output_args=False, level='INFO')
 def abort_catcher(error: AbortError):
+    """
+    Обработчик отмены ответа на запрос пользователя.
+    """
     return flask_json_response(
         **error.info
     )
@@ -33,6 +42,9 @@ def abort_catcher(error: AbortError):
 
 # @app.errorhandler(Exception)
 def global_exception_catcher(error):
+    """
+    Обработчик для всех ошибок, которые я не знаю.
+    """
     logger.error(str(error))
     return flask_json_response(
         StatusCodes.SERVER_ERROR,
