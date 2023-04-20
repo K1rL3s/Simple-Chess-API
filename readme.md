@@ -1,6 +1,6 @@
 # Simple Chess API
 
-#### [Простое шахматное API](https://github.com/K1rL3s/Simple-Chess-API), легко интегрируемое в чат-ботов
+#### [Простое шахматное API](https://github.com/K1rL3s/Simple-Chess-API), легко интегрируемое в чат-ботов ([TG](https://github.com/K1rL3s/Telegram-Chess-Bot)).
 
 Принцип работы:
 
@@ -46,6 +46,7 @@ SECRET_KEY=<csrf-token>
 API_AUTH_KEY=<token>
 HOST=<127.0.0.1>
 PORT=<1-65535>
+APP_THREADS=<int>
 
 PREPARED_ENGINES=<int>
 ```
@@ -59,6 +60,7 @@ python ./main.py
 ### Формат запросов и ответов
 
 - Все запросы осуществляются методом GET.
+- Если установлен ключ, то надо передавать его в заголовках запроса.
 - "*" - обязательные параметры, "." - опциональные параметры.
 - **"cN"** -> c - буква, N - номер.
 - В описании ключей ответа сервера речь идёт о словаре по ключу "response".

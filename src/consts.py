@@ -15,11 +15,14 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
     HOST = os.getenv('HOST') or '127.0.0.1'
     PORT = int(os.getenv("PORT") or 5000)
+    APP_THREADS = int(os.getenv("APP_THREADS") or 4)
 
     # В `.env` задать кол-во заготовленных движков.
     PREPARED_ENGINES = int(os.getenv("PREPARED_ENGINES") or 0)
     START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-    BOX = None  # type BoxWithEngines
+    # В эту переменную помещается BoxWithEngines в main.py,
+    # вызывая src.create_app.init_box_with_engines.
+    BOX = None
 
 
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
