@@ -27,17 +27,29 @@ git clone https://github.com/K1rL3s/Simple-Chess-API.git
 cd ./Simple-Chess-API
 ```
 
-3. Установить все нужные библиотеки. \
+3. Создать и активировать виртуальное окружение:
+
+```commandline
+# Windows:
+python -m venv venv
+venv\Scripts\activate.bat
+
+# Linux:
+python3 -m venv venv
+source venv\Scripts\activate
+```
+
+4. Установить все нужные библиотеки. \
    *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
 
 ```commandline
 pip install -r ./requirements.txt
 ```
 
-4. Установить шахматный движок для работы с библиотекой **stockfish**
+5. Установить шахматный движок для работы с библиотекой **stockfish**
    ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
 
-5. Создать и заполнить файл `.env` в корневой папке (пример: `.env.example`):
+6. Создать и заполнить файл `.env` в корневой папке (пример: `.env.example`):
 
 ```env
 ENGINE_PATH=<path-to-engine-exe>
@@ -51,7 +63,7 @@ APP_THREADS=<int>
 PREPARED_ENGINES=<int>
 ```
 
-6. Запустить сервер:
+7. Запустить сервер:
 
 ```commandline
 python ./main.py
