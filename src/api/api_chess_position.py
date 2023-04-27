@@ -28,16 +28,11 @@ def get_position_score() -> flask.Response:
             prev_moves=params.prev_moves,
             prepared=params.prepared,
     ) as engine:
-
         if engine == StatusCodes.INVALID_PARAMS:
             abort(StatusCodes.INVALID_PARAMS, f'"prev_moves" param has illegal moves')
 
         if params.fen:
-            try:
-                chess.Board(params.fen)
-                engine.set_fen_position(params.fen)
-            except ValueError:
-                abort(StatusCodes.INVALID_PARAMS, '"fen" param is invalid')
+            engine.set_fen_position(params.fen)
 
         board = chess.Board(fen := engine.get_fen_position())
 

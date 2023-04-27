@@ -161,6 +161,15 @@ def handle_position_params() -> PositionParams:
             '"prev_moves" or "fen" param is required'
         )
 
+    if fen:
+        try:
+            chess.Board(fen)
+        except ValueError:
+            abort(
+                StatusCodes.INVALID_PARAMS,
+                '"fen" param is invalid'
+            )
+
     if with_engine not in RequestsParams.YES_OR_NO.value:
         abort(
             StatusCodes.INVALID_PARAMS,
