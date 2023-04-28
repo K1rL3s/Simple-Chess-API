@@ -12,10 +12,12 @@ def main():
     app = create_app.init_app()
     create_app.init_box_with_engines()
 
-    logger.info(f'Running a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}')
-    serve(app, host=Config.HOST, port=Config.PORT, threads=Config.APP_THREADS)
-    logger.info(f'Stop a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}')
+    run = f'Running a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}'
+    stop = f'Stop a Flask "Simple-Chess-API" on {Config.HOST}:{Config.PORT}'
 
+    logger.info(run)
+    serve(app, host=Config.HOST, port=Config.PORT, threads=Config.APP_THREADS)
+    logger.info(stop)
 
 if __name__ == '__main__':
     main()

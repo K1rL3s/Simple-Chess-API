@@ -15,11 +15,18 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/board/', methods=['GET'])
-@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
+@log(
+    entry=True,
+    output=False,
+    with_entry_args=False,
+    with_output_args=False,
+    level='INFO'
+)
 @requires_auth
 def get_board_image() -> flask.Response:
     """
-    Возвращает .png файл с шахматной доской и фигруами на ней в соответствии с FEN.
+    Возвращает .png файл с шахматной доской и фигруами на ней
+    в соответствии с FEN.
     """
 
     params = handle_board_params()

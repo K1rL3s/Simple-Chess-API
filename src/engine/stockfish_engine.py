@@ -2,11 +2,11 @@ import contextlib
 import queue
 
 import chess
-from loguru import logger
 from stockfish import Stockfish
 
-from src.consts import TerminatorTypes, Config, engine_params, Defaults, StatusCodes
-from src.utils.abort import abort, AbortError
+from src.consts import (TerminatorTypes, Config, engine_params,
+                        Defaults, StatusCodes, )
+from src.utils.abort import abort
 from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
 
@@ -14,9 +14,10 @@ from src.utils.limitations import limit_engine_params
 class BoxWithEngines:
     def __init__(self, n: int):
         """
-        "Коробка с движками", которая занимается распределение движков по потокам.
+        "Коробка с движками",
+        которая занимается распределение движков по потокам.
 
-        :param n: Сколько движков хранить в очереди.
+        :param n: Сколько запущенных движков хранить в очереди.
         """
 
         self._worker_queue = queue.Queue()
@@ -40,7 +41,9 @@ class BoxWithEngines:
     ) -> Stockfish:
         """
         Контекстный менеджер, гарантирующий, что движок вернётся в очередь.
-        Если не будет доступных движков, то мы просто будем ждать на .get(block=True).
+        Если не будет доступных движков,
+        то мы просто будем ждать на .get(block=True).
+
         Аргументы к функции `get_stockfish`.
         """
 
@@ -49,25 +52,28 @@ class BoxWithEngines:
             return
 
         if not Config.PREPARED_ENGINES:
-            return abort(StatusCodes.NO_PREPARED_ENGINES, 'There are no prepared engines on server')
+            return abort(StatusCodes.NO_PREPARED_ENGINES,
+                         'There are no prepared engines on server')
 
         engine = self._worker_queue.get(block=True)
         try:
             reset_params(engine)
             set_position_by_moves(engine, prev_moves)
             yield engine
-        except AbortError as e:  # Если суета с отменой обработки, то движка это не касается
-            raise e
-        except Exception:  # noqa
-            logger.error('Error on engine processing', exc_info=True)
+        except Exception as error:
+            raise error
         finally:
             self._worker_queue.put(engine)
 
 
-
-@log(entry=True, output=True,
-     with_entry_args=True, with_output_args=True,
-     with_time=True, level='DEBUG')
+@log(
+    entry=True,
+    output=True,
+    with_entry_args=True,
+    with_output_args=True,
+    with_time=True,
+    level='DEBUG'
+)
 def get_stockfish(
         min_time: int = Defaults.THINK_MS.value,
         threads: int = Defaults.THREADS.value,
@@ -81,9 +87,11 @@ def get_stockfish(
     Возвращает instance stockfish.Stockfish с указанными параметрами.
 
     :param min_time: = Минимальное время движку на подумать.
-    :param threads: Потоки для работы движка. Больше - сильнее. Должно быть меньше, чем доступно на пк.
+    :param threads: Потоки для работы движка. Больше - сильнее.
+                    Должно быть меньше, чем доступно на пк.
     :param depth: Глубина продумывания ходов.
-    :param ram_hash: Кол-во оперативный памяти в МБ. Должно быть степенью двойки.
+    :param ram_hash: Кол-во оперативный памяти в МБ.
+                     Должно быть степенью двойки.
     :param skill_level: Уровень скилла от 1 до 20.
     :param elo: Шахматный рейтинг Эло.
     :param prev_moves: Предыдущие ходы в формате "e2e4;e7e5;...".
@@ -113,12 +121,14 @@ def get_stockfish(
     return engine
 
 
-def set_position_by_moves(engine: Stockfish, prev_moves: str | None = None) -> None:
+def set_position_by_moves(engine: Stockfish,
+                          prev_moves: str | None = None) -> None:
     if prev_moves:
         for move in prev_moves.split(';'):
             answer = make_move(engine, move)
             if answer == StatusCodes.INVALID_PARAMS:
-                abort(StatusCodes.INVALID_PARAMS, '"prev_moves" param has illegal moves')
+                abort(StatusCodes.INVALID_PARAMS,
+                      '"prev_moves" param has illegal moves')
 
 
 def reset_params(engine: Stockfish) -> None:
@@ -158,7 +168,8 @@ def make_move(
 
     board = chess.Board(fen := engine.get_fen_position())
     if board.is_check():
-        check = chess.square_name(board.king(chess.WHITE if 'w' in fen else chess.BLACK))
+        check = chess.square_name(
+            board.king(chess.WHITE if 'w' in fen else chess.BLACK))
     else:
         check = None
 
@@ -170,7 +181,8 @@ def is_game_over(fen: str) -> chess.Termination | None:
     Проверка на конец игры.
 
     :param fen: FEN позиция.
-    :return: Состояние, по которому закончилась игра, или None (не закончилась).
+    :return: Состояние, по которому закончилась игра,
+             или None (не закончилась).
     """
 
     outcome = chess.Board(fen).outcome()

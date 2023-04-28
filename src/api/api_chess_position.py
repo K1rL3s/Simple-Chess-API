@@ -7,6 +7,7 @@ from src.utils.response import flask_json_response
 from src.utils.params_handlers import handle_position_params
 from src.utils.decorators import log, requires_auth
 
+
 blueprint = flask.Blueprint(
     'api/chess/position',
     __name__,
@@ -15,21 +16,31 @@ blueprint = flask.Blueprint(
 
 # Подумать над `with_engine`, и если он False, то не открывать движок.
 @blueprint.route('/api/chess/position/', methods=['GET'])
-@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
+@log(
+    entry=True,
+    output=False,
+    with_entry_args=False,
+    with_output_args=False,
+    level='INFO'
+)
 @requires_auth
 def get_position_score() -> flask.Response:
     """
-    Возвращает оценку позиции (у кого больше шансов выиграть) и состояние (конец ли игры и кто выиграл).
+    Возвращает оценку позиции (у кого больше шансов выиграть)
+    и состояние (конец ли игры и кто выиграл).
     """
 
     params = handle_position_params()
 
     with Config.BOX.get_engine(
-            prev_moves=params.prev_moves,
-            prepared=params.prepared,
+        prev_moves=params.prev_moves,
+        prepared=params.prepared,
     ) as engine:
         if engine == StatusCodes.INVALID_PARAMS:
-            abort(StatusCodes.INVALID_PARAMS, f'"prev_moves" param has illegal moves')
+            abort(
+                StatusCodes.INVALID_PARAMS,
+                f'"prev_moves" param has illegal moves'
+            )
 
         if params.fen:
             engine.set_fen_position(params.fen)
@@ -62,7 +73,8 @@ def get_position_score() -> flask.Response:
                 end_type = 'checkmate'
             value = evalutation["value"]
 
-        if params.with_engine and engine.does_current_engine_version_have_wdl_option():
+        if params.with_engine \
+                and engine.does_current_engine_version_have_wdl_option():
             wdl = engine.get_wdl_stats()
             if not wdl:
                 wdl = None

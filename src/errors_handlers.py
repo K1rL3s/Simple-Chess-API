@@ -30,7 +30,13 @@ def bad_request(error):
 
 
 # @app.errorhandler(AbortError)
-@log(entry=False, output=False, with_entry_args=False, with_output_args=False, level='INFO')
+@log(
+    entry=False,
+    output=False,
+    with_entry_args=False,
+    with_output_args=False,
+    level='INFO'
+)
 def abort_catcher(error: AbortError):
     """
     Обработчик отмены ответа на запрос пользователя.

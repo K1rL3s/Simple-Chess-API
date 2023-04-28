@@ -28,7 +28,10 @@ def handle_move_params() -> MoveParams:
         return abort(StatusCodes.INVALID_PARAMS, str(e))
 
     # Обработка некорректных данных
-    if not user_move and not prev_moves and orientation not in RequestsParams.BLACK.value:
+    if (
+            not user_move and not prev_moves
+            and orientation not in RequestsParams.BLACK.value
+    ):
         # Если не задан ход, раньше ходов не было и игрок не играет за чёрных
         # Нужно, чтобы машина играла белыми (сделала первый ход)
         abort(StatusCodes.INVALID_PARAMS, '"user_move" param is invalid')
@@ -39,7 +42,8 @@ def handle_move_params() -> MoveParams:
     if orientation not in RequestsParams.COLORS.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"orientation" param is invalid. It must be in {RequestsParams.COLORS.value}'
+            f'"orientation" param is invalid. '
+            f'It must be in {RequestsParams.COLORS.value}'
         )
     orientation = 'w' if orientation in RequestsParams.WHITE.value else 'b'
 
@@ -52,7 +56,8 @@ def handle_move_params() -> MoveParams:
     if prepared not in RequestsParams.YES_OR_NO.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"prepared" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+            f'"prepared" param is invalid. '
+            f'It must in {RequestsParams.YES_OR_NO.value}'
         )
     prepared = prepared in RequestsParams.YES.value
 
@@ -94,11 +99,14 @@ def handle_board_params() -> BoardParams:
     if orientation not in RequestsParams.COLORS.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"orientation" param is invalid. It must be in {RequestsParams.COLORS.value}'
+            f'"orientation" param is invalid. '
+            f'It must be in {RequestsParams.COLORS.value}'
         )
     # orientation = orientation == 'w'
     # Здесь такая обработка, потому что для библиотеки chess
-    orientation = chess.WHITE if orientation in RequestsParams.WHITE.value else chess.BLACK
+    orientation = (chess.WHITE
+                   if orientation in RequestsParams.WHITE.value
+                   else chess.BLACK)
 
     if colors:
         try:
@@ -107,7 +115,8 @@ def handle_board_params() -> BoardParams:
         except ValueError:
             abort(
                 StatusCodes.INVALID_PARAMS,
-                '"colors" param is invalid. Between square-type and colors must be "-", '
+                '"colors" param is invalid. '
+                'Between square-type and colors must be "-", '
                 'between pairs must be ";"'
             )
     else:
@@ -124,7 +133,8 @@ def handle_board_params() -> BoardParams:
     if coords not in RequestsParams.YES_OR_NO.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"coords" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+            f'"coords" param is invalid. '
+            f'It must in {RequestsParams.YES_OR_NO.value}'
         )
     coords = coords in RequestsParams.YES.value
 
@@ -173,14 +183,16 @@ def handle_position_params() -> PositionParams:
     if with_engine not in RequestsParams.YES_OR_NO.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"with_engine" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+            f'"with_engine" param is invalid. '
+            f'It must in {RequestsParams.YES_OR_NO.value}'
         )
     with_engine = with_engine in RequestsParams.YES.value
 
     if prepared not in RequestsParams.YES_OR_NO.value:
         abort(
             StatusCodes.INVALID_PARAMS,
-            f'"prepared" param is invalid. It must in {RequestsParams.YES_OR_NO.value}'
+            f'"prepared" param is invalid. '
+            f'It must in {RequestsParams.YES_OR_NO.value}'
         )
     prepared = prepared in RequestsParams.YES.value
 

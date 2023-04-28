@@ -12,8 +12,9 @@ def test_limit_engine_minimum():
     skill_level = 0
     elo = 0
 
-    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(min_time, threads, depth, ram_hash,
-                                                                               skill_level, elo)
+    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(
+        min_time, threads, depth, ram_hash, skill_level, elo
+    )
     assert Limits.MIN_THINK_MS.value == min_time
     assert Limits.MIN_THREADS.value == threads
     assert Limits.MIN_DEPTH.value == depth
@@ -30,8 +31,9 @@ def test_limit_engine_maximum():
     skill_level = 10 ** 9
     elo = 10 ** 9
 
-    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(min_time, threads, depth, ram_hash,
-                                                                               skill_level, elo)
+    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(
+        min_time, threads, depth, ram_hash, skill_level, elo
+    )
     assert Limits.MAX_THINK_MS.value == min_time
     assert Limits.MAX_THREADS.value == threads
     assert Limits.MAX_DEPTH.value == depth
@@ -48,8 +50,9 @@ def test_limit_engine_random():
     skill_level = randint(0, 10 ** 9)
     elo = randint(0, 10 ** 9)
 
-    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(min_time, threads, depth, ram_hash,
-                                                                               skill_level, elo)
+    min_time, threads, depth, ram_hash, skill_level, elo = limit_engine_params(
+        min_time, threads, depth, ram_hash, skill_level, elo
+    )
     assert Limits.MIN_THINK_MS.value <= min_time <= Limits.MAX_THINK_MS.value
     assert Limits.MIN_THREADS.value <= threads <= Limits.MAX_THREADS.value
     assert Limits.MIN_DEPTH.value <= depth <= Limits.MAX_DEPTH.value
@@ -79,4 +82,5 @@ def test_limit_board_random():
 
     size = limit_board_params(size)
 
-    assert Limits.MIN_BOARD_IMAGE_SIZE.value <= size <= Limits.MAX_BOARD_IMAGE_SIZE.value
+    assert (Limits.MIN_BOARD_IMAGE_SIZE.value <= size
+            <= Limits.MAX_BOARD_IMAGE_SIZE.value)

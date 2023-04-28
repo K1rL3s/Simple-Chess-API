@@ -3,6 +3,7 @@ from enum import Enum
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 
@@ -26,7 +27,8 @@ class Config:
 
 
 # Сервер автора не самый сильный, поэтому он сделал такие крутые ограничения
-# Эти настройки используются для заготовленных движков, но можно создать отдельный класс.
+# Эти настройки используются для заготовленных движков,
+# но можно создать отдельный класс.
 class Defaults(Enum):
     THINK_MS = 1000
     THREADS = 1
@@ -83,15 +85,28 @@ class TerminatorTypes(Enum):
 # http://kvetka.org/Stockfish_opt.shtml
 engine_params = {
     "Debug Log File": "",
-    "Contempt": 0,  # Склонность к принятию ничьи. Больше нуля - более благосклонен. [-100; 100]
+
+    # Склонность к принятию ничьи. Больше нуля - более благосклонен.
+    "Contempt": 0,
     "Min Split Depth": 0,
-    "Threads": Defaults.THREADS.value,  # Больше - сильнее. Должно быть меньше, чем доступно на пк.
+
+    # Больше - сильнее. Должно быть меньше, чем доступно на пк.
+    "Threads": Defaults.THREADS.value,
     "Ponder": "false",
-    "Hash": Defaults.RAM_HASH.value,  # Кол-во оперативной памяти в МБ. Рекомендуется степень двойки.
-    "MultiPV": 1,  # Сколько рекомендуемых ходов выводить движку.
-    "Skill Level": Defaults.SKILL_LEVEL.value,  # Сила движка от 1 до 20
+
+    # Кол-во оперативной памяти в МБ. Рекомендуется степень двойки.
+    "Hash": Defaults.RAM_HASH.value,
+
+    # Сколько рекомендуемых ходов выводить движку.
+    "MultiPV": 1,
+
+    # Сила движка от 1 до 20
+    "Skill Level": Defaults.SKILL_LEVEL.value,
     "Move Overhead": 0,
-    "Minimum Thinking Time": Limits.MIN_THINK_MS.value,  # Минимальное время на подумать движку.
+
+    # Минимальное время на подумать движку.
+    "Minimum Thinking Time": Limits.MIN_THINK_MS.value,
+
     "Slow Mover": 10,  # Минимум
     "UCI_Chess960": "false",
     "UCI_LimitStrength": "false",

@@ -28,7 +28,11 @@ def log(
     """
 
     def wrapper(func):
-        function_name = getattr(func, 'func_name', None) or getattr(func, '__name__', None) or '<undefined>'
+        function_name = (
+                getattr(func, 'func_name', None)
+                or getattr(func, '__name__', None)
+                or '<undefined>'
+        )
 
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
@@ -57,8 +61,11 @@ def log(
 
             if with_time:
                 request = getattr(flask, 'request', None)
-                remote_addr = request.remote_addr if isinstance(request, flask.Request) else 'Python'
-                info = f"{remote_addr:<15} | {f'{function_name} took {total:.3f} secs':<40}"
+                remote_addr = (request.remote_addr
+                               if isinstance(request, flask.Request)
+                               else 'Python')
+                info = f"{remote_addr:<15} | " \
+                       f"{f'{function_name} took {total:.3f} secs':<40}"
 
                 if isinstance(result, flask.Response):
                     info += f' | {result.status_code} - {message}'
@@ -74,7 +81,8 @@ def log(
 
 def requires_auth(func):
     """
-    Декоратор для примитивной авторизации в апишке по заранее заданному секретному ключу.
+    Декоратор для примитивной авторизации в апишке по заранее заданному
+    секретному ключу.
     Ключ один, хранится и у сервера, и у пользователя.
     Если у сервера нет ключа, то доступ у всех через всё.
     """

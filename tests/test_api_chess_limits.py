@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from src.consts import Limits, Defaults
 
+
 BASE_URL = "http://127.0.0.1:5000/api/chess/limits/"
 
 load_dotenv()
@@ -21,7 +22,10 @@ def test_limits():
     assert 'status_code' in data
     data = data["response"]
 
-    params = ('min_time', 'max_time', 'threads', 'depth', 'ram_hash', 'skill_level', 'elo', 'size')
+    params = (
+        'min_time', 'max_time', 'threads', 'depth',
+        'ram_hash', 'skill_level', 'elo', 'size'
+    )
     assert len(data.keys()) == len(params)
     assert all([key in params for key in data.keys()])
 

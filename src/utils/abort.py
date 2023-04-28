@@ -7,6 +7,7 @@ class AbortError(Exception):
     """
     Класс ошибки для отмены ответа на запрос пользователя.
     """
+
     def __init__(self, **kwargs):
         self.info = {
             'status_code': kwargs.get('status_code', StatusCodes.SERVER_ERROR),

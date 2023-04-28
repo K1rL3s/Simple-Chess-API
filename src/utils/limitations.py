@@ -1,6 +1,15 @@
 from src.consts import Limits
 
 
+def limit_min_max(value: int, minimum: int, maximum: int) -> int:
+    return int(
+        max(
+            min(value, maximum),
+            minimum
+        )
+    )
+
+
 def limit_engine_params(
         min_time: int = 0,
         threads: int = 0,
@@ -21,13 +30,30 @@ def limit_engine_params(
     :return: Передаваемые значения, ограниченные src.consts.Limits
     """
 
-    min_time = int(max(min(min_time, Limits.MAX_THINK_MS.value), Limits.MIN_THINK_MS.value))
+    min_time = limit_min_max(
+        min_time, Limits.MIN_THINK_MS.value, Limits.MAX_THINK_MS.value
+    )
     # max_time должно ограничиваться в другом месте :(
-    threads = int(max(min(threads, Limits.MAX_THREADS.value), Limits.MIN_THREADS.value))
-    depth = int(max(min(depth, Limits.MAX_DEPTH.value), Limits.MIN_DEPTH.value))
-    ram_hash = int(max(min(ram_hash, Limits.MAX_RAM_HASH.value), Limits.MIN_RAM_HASH.value))
-    skill_level = int(max(min(skill_level, Limits.MAX_SKILL_LEVEL.value), Limits.MIN_SKILL_LEVEL.value))
-    elo = int(max(min(elo, Limits.MAX_ELO.value), Limits.MIN_ELO.value))
+
+    threads = limit_min_max(
+        threads, Limits.MIN_THREADS.value, Limits.MAX_THREADS.value
+    )
+
+    depth = limit_min_max(
+        depth, Limits.MIN_DEPTH.value, Limits.MAX_DEPTH.value
+    )
+
+    ram_hash = limit_min_max(
+        ram_hash, Limits.MIN_RAM_HASH.value, Limits.MAX_RAM_HASH.value
+    )
+
+    skill_level = limit_min_max(
+        skill_level, Limits.MIN_SKILL_LEVEL.value, Limits.MAX_SKILL_LEVEL.value
+    )
+
+    elo = limit_min_max(
+        elo, Limits.MIN_ELO.value, Limits.MAX_ELO.value
+    )
 
     return min_time, threads, depth, ram_hash, skill_level, elo
 
@@ -42,6 +68,10 @@ def limit_board_params(
     :return: Передаваемые значения, ограниченные src.consts.Limits
     """
 
-    size = max(min(size, Limits.MAX_BOARD_IMAGE_SIZE.value), Limits.MIN_BOARD_IMAGE_SIZE.value)
+    size = limit_min_max(
+        size,
+        Limits.MIN_BOARD_IMAGE_SIZE.value,
+        Limits.MAX_BOARD_IMAGE_SIZE.value
+    )
 
     return size

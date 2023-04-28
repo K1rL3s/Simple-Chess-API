@@ -14,7 +14,11 @@ blueprint = flask.Blueprint(
 
 
 @cache
-def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> dict[str, int]:
+def to_dict(
+        minimum: int | Enum,
+        default: int | Enum,
+        maximum: int | Enum
+) -> dict[str, int]:
     """
     Чтобы не писать эти условия в роуте ниже.
     """
@@ -27,13 +31,21 @@ def to_dict(minimum: int | Enum, default: int | Enum, maximum: int | Enum) -> di
 
 
 @blueprint.route('/api/chess/limits/', methods=['GET'])
-@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
+@log(
+    entry=True,
+    output=False,
+    with_entry_args=False,
+    with_output_args=False,
+    level='INFO'
+)
 @requires_auth
 @cache
 def api_chess_limits():
     """
-    Возвращает минимум, дефолт и максимум для числовых параметров генерации хода и рисования доски.
-    Если где-то переименовать ключ (параметр), то и тут надо, а то будет не круто.
+    Возвращает минимум, дефолт и максимум для числовых параметров
+    генерации хода и рисования доски.
+    Если где-то переименовать ключ (параметр),
+    то и тут надо, а то будет не круто.
     """
 
     return flask_json_response(

@@ -7,6 +7,7 @@ from src.engine.stockfish_engine import make_move
 from src.utils.params_handlers import handle_move_params
 from src.utils.decorators import log, requires_auth
 
+
 blueprint = flask.Blueprint(
     'api/chess/move',
     __name__,
@@ -14,7 +15,13 @@ blueprint = flask.Blueprint(
 
 
 @blueprint.route('/api/chess/move/', methods=['GET'])
-@log(entry=True, output=False, with_entry_args=False, with_output_args=False, level='INFO')
+@log(
+    entry=True,
+    output=False,
+    with_entry_args=False,
+    with_output_args=False,
+    level='INFO'
+)
 @requires_auth
 def make_a_move() -> flask.Response:
     """
@@ -39,11 +46,19 @@ def make_a_move() -> flask.Response:
         if params.user_move:
             answer = make_move(engine, params.user_move)
             if answer == StatusCodes.INVALID_PARAMS:
-                return abort(StatusCodes.INVALID_PARAMS, f'"{params.user_move}" is illegal move')
+                return abort(
+                    StatusCodes.INVALID_PARAMS,
+                    f'"{params.user_move}" is illegal move'
+                )
 
         # Часть игры машины
         # min_time ограничивается в limitations, в get_stockfish
-        max_time = max(min(params.min_time, Limits.MAX_THINK_MS.value), Limits.MIN_THINK_MS.value)
+        max_time = max(
+            min(
+                params.min_time, Limits.MAX_THINK_MS.value
+            ),
+            Limits.MIN_THINK_MS.value
+        )
         stockfish_move = engine.get_best_move_time(max_time)
 
         # 100% не вернёт ошибку
