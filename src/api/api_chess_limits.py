@@ -40,7 +40,7 @@ def to_dict(
 )
 @requires_auth
 @cache
-def api_chess_limits():
+def api_chess_limits() -> flask.Response:
     """
     Возвращает минимум, дефолт и максимум для числовых параметров
     генерации хода и рисования доски.

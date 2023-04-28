@@ -57,7 +57,8 @@ def test_limit_engine_random():
     assert Limits.MIN_THREADS.value <= threads <= Limits.MAX_THREADS.value
     assert Limits.MIN_DEPTH.value <= depth <= Limits.MAX_DEPTH.value
     assert Limits.MIN_RAM_HASH.value <= ram_hash <= Limits.MAX_RAM_HASH.value
-    assert Limits.MIN_SKILL_LEVEL.value <= skill_level <= Limits.MAX_SKILL_LEVEL.value
+    assert (Limits.MIN_SKILL_LEVEL.value <= skill_level
+            <= Limits.MAX_SKILL_LEVEL.value)
     assert Limits.MIN_ELO.value <= elo <= Limits.MAX_ELO.value
 
 

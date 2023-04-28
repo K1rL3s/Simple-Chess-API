@@ -231,7 +231,8 @@ def test_position_prev_moves_prepared_engine():
     response = requests.get(BASE_URL, params=params, headers=headers)
     data = response.json()
 
-    if not PREPARED_ENGINES:  # Если не установлены движки, то должна быть ошибка
+    # Если не установлены движки, то должна быть ошибка
+    if not PREPARED_ENGINES:
         assert response.status_code == 409
         assert "message" in data
         assert "status_code" in data

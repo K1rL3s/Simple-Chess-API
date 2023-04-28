@@ -8,7 +8,7 @@ blueprint = flask.Blueprint(
 
 @blueprint.route('/api/chess/', methods=['GET'])
 @blueprint.route('/', methods=['GET'])
-def api_chess():
+def api_chess() -> flask.Response:
     """
     Переадресация на вывод readme.md.
     """

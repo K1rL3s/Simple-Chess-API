@@ -4,8 +4,10 @@ import queue
 import chess
 from stockfish import Stockfish
 
-from src.consts import (TerminatorTypes, Config, engine_params,
-                        Defaults, StatusCodes, )
+from src.consts import (
+    TerminatorTypes, Config, engine_params,
+    Defaults, StatusCodes,
+)
 from src.utils.abort import abort
 from src.utils.decorators import log
 from src.utils.limitations import limit_engine_params
