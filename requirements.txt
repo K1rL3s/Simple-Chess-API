@@ -6,7 +6,7 @@ cairocffi==1.3.0
 # pip uninstall cairocffi
 # pip install pipwin
 # pipwin install cairocffi==1.3.0
-Flask==2.2.3
+Flask==2.2.5
 Flask-Markdown==0.3
 python-dotenv==1.0.0
 loguru==0.6.0
