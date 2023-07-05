@@ -33,14 +33,21 @@
     venv\Scripts\activate.bat
 
     # Linux:
-    python3 -m venv venv
+    virtualenv venv --no-setuptools
     source venv\Scripts\activate
+    curl -O https://bootstrap.pypa.io/get-pip.py
+    python ./get-pip.py
     ```
 
 4. Установить все нужные библиотеки. \
-   *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
+    *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
     ```
+    # Windows:
     pip install -r ./requirements.txt
+
+    # Linux:
+    sudo apt-get install libcairo2
+    python -m pip install -r ./requirements.txt
     ```
 
 5. Установить шахматный движок для работы с библиотекой **stockfish**
