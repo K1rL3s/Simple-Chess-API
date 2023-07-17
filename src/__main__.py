@@ -19,5 +19,6 @@ def main():
     serve(app, host=Config.HOST, port=Config.PORT, threads=Config.APP_THREADS)
     logger.info(stop)
 
+
 if __name__ == '__main__':
     main()

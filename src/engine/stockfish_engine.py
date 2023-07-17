@@ -54,8 +54,10 @@ class BoxWithEngines:
             return
 
         if not Config.PREPARED_ENGINES:
-            return abort(StatusCodes.NO_PREPARED_ENGINES,
-                         'There are no prepared engines on server')
+            return abort(
+                StatusCodes.NO_PREPARED_ENGINES,
+                'There are no prepared engines on server'
+            )
 
         engine = self._worker_queue.get(block=True)
         try:
@@ -105,13 +107,15 @@ def get_stockfish(
     )
 
     new_params = engine_params.copy()
-    new_params.update({
-        "Minimum Thinking Time": min_time,
-        "Threads": threads,
-        "Hash": ram_hash,
-        "Skill Level": skill_level,
-        "UCI_Elo": elo
-    })
+    new_params.update(
+        {
+            "Minimum Thinking Time": min_time,
+            "Threads": threads,
+            "Hash": ram_hash,
+            "Skill Level": skill_level,
+            "UCI_Elo": elo
+        }
+    )
     engine = Stockfish(
         path=Config.ENGINE_PATH,
         depth=depth,
@@ -123,14 +127,18 @@ def get_stockfish(
     return engine
 
 
-def set_position_by_moves(engine: Stockfish,
-                          prev_moves: str | None = None) -> None:
+def set_position_by_moves(
+        engine: Stockfish,
+        prev_moves: str | None = None
+) -> None:
     if prev_moves:
         for move in prev_moves.split(';'):
             answer = make_move(engine, move)
             if answer == StatusCodes.INVALID_PARAMS:
-                abort(StatusCodes.INVALID_PARAMS,
-                      '"prev_moves" param has illegal moves')
+                abort(
+                    StatusCodes.INVALID_PARAMS,
+                    '"prev_moves" param has illegal moves'
+                )
 
 
 def reset_params(engine: Stockfish) -> None:
@@ -171,7 +179,8 @@ def make_move(
     board = chess.Board(fen := engine.get_fen_position())
     if board.is_check():
         check = chess.square_name(
-            board.king(chess.WHITE if 'w' in fen else chess.BLACK))
+            board.king(chess.WHITE if 'w' in fen else chess.BLACK)
+        )
     else:
         check = None
 

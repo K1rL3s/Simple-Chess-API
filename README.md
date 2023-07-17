@@ -17,43 +17,13 @@
 
 ### Запуск
 
-1. Установить **python** версии **3.10**+
-   (Тестировалось на версии **3.10.8**)
-
-2. Склонировать репозиторий и перейти в него:
+1. Склонировать репозиторий и перейти в него:
     ```
     git clone https://github.com/K1rL3s/Simple-Chess-API.git
     cd ./Simple-Chess-API
     ```
 
-3. Создать и активировать виртуальное окружение:
-    ```
-    # Windows:
-    python -m venv venv
-    venv\Scripts\activate.bat
-
-    # Linux:
-    virtualenv venv --no-setuptools
-    source venv\Scripts\activate
-    curl -O https://bootstrap.pypa.io/get-pip.py
-    python ./get-pip.py
-    ```
-
-4. Установить все нужные библиотеки. \
-    *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
-    ```
-    # Windows:
-    pip install -r ./requirements.txt
-
-    # Linux:
-    sudo apt-get install libcairo2
-    python -m pip install -r ./requirements.txt
-    ```
-
-5. Установить шахматный движок для работы с библиотекой **stockfish**
-   ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
-
-6. Создать и заполнить файл `.env` в корневой папке (пример: `.env.example`):
+2. Создать и заполнить файл `.env` в корневой папке (пример: `.env.example`):
     ```
     ENGINE_PATH=<path-to-engine-exe>
 
@@ -66,7 +36,49 @@
     PREPARED_ENGINES=<int>
     ```
 
-7. Запустить сервер:
+- ### Docker
+
+1. Иметь установленный [Docker Engine](https://docs.docker.com/engine/)
+
+2. Собрать и запустить:
+
+   ```
+   docker compose up -d --build
+   ```
+
+- ### У себя
+
+1. Установить **python** версии **3.10**+
+   (Тестировалось на версии **3.10.8**)
+
+2. Создать и активировать виртуальное окружение:
+    ```
+    # Windows:
+    python -m venv venv
+    venv\Scripts\activate.bat
+
+    # Linux:
+    virtualenv venv --no-setuptools
+    source venv\Scripts\activate
+    curl -O https://bootstrap.pypa.io/get-pip.py
+    python ./get-pip.py
+    ```
+
+3. Установить все нужные библиотеки. \
+    *При запуске на Windows прочтите requirements.txt для корректной установки зависимостей*
+    ```
+    # Windows:
+    pip install -r ./requirements.txt
+
+    # Linux:
+    sudo apt-get install libcairo2
+    python -m pip install -r ./requirements.txt
+    ```
+
+4. Установить шахматный движок для работы с библиотекой **stockfish**
+   ([docs](https://pypi.org/project/stockfish/)) ([stockfish](https://stockfishchess.org/download/))
+
+5. Запустить сервер:
     ```
     python ./main.py
     ```

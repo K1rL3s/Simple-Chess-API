@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  api:
+    image: chess-api-image
+    container_name: chess-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "1024M"  # Один движок занимает ~150-200мб
+        reservations:
+          cpus: "1"
+          memory: "512M"
+    volumes:
+      - logs:/app/logs
+    env_file: .env
+    environment:
+      - ENGINE_PATH=/usr/games/stockfish
+    networks:
+      chess-network:
+
+volumes:
+  logs:
+networks:
+  chess-network:
+    external: false
+    name: chess-network
