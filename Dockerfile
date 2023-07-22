@@ -33,5 +33,6 @@ COPY --from=builder /app/requirements.txt .
 RUN pip install --no-cache --no-cache-dir /wheels/*
 
 COPY ./src ./src
+COPY ./README.md ./README.md
 
 CMD ["python", "-m", "src"]

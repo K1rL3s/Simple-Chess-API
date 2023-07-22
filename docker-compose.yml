@@ -16,6 +16,8 @@ services:
           memory: "512M"
     volumes:
       - logs:/app/logs
+    ports:
+      - "${PORT}:${PORT}"
     env_file: .env
     environment:
       - ENGINE_PATH=/usr/games/stockfish

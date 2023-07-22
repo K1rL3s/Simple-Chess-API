@@ -17,7 +17,7 @@ def api_chess_docs() -> flask.Response:
     """
 
     # Надо как-то лучше мб
-    readme = Path(__file__).absolute().parent.parent.parent / 'readme.md'
+    readme = Path(__file__).absolute().parent.parent.parent / 'README.md'
 
     with open(readme, 'r', encoding='utf-8') as f:
         return flask.Response(
