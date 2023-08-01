@@ -1,17 +1,11 @@
-import os
-
 import requests
-from dotenv import load_dotenv
+
 
 from src.consts import RequestsParams
+from tests.base import BASE_URL, PREPARED_ENGINES, headers
 
 
-BASE_URL = "http://127.0.0.1:5000/api/chess/move/"
-
-load_dotenv()
-
-headers = {"Authorization": os.getenv("API_AUTH_KEY")}
-PREPARED_ENGINES = int(os.getenv("PREPARED_ENGINES") or 0)
+BASE_URL += "/move/"
 
 
 def test_move_with_user_move_and_prev_moves():

@@ -1,13 +1,9 @@
-import os
-
 import requests
-from dotenv import load_dotenv
+
+from tests.base import API_AUTH_KEY, BASE_URL
 
 
-load_dotenv()
-
-BASE_URL = "http://127.0.0.1:5000/api/chess/"
-API_AUTH_KEY = os.getenv("API_AUTH_KEY")
+BASE_URL += "/board/"
 
 
 def test_authorization():
@@ -17,6 +13,6 @@ def test_authorization():
     params = {
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     }
-    response = requests.get(BASE_URL + 'board', params=params)
+    response = requests.get(BASE_URL, params=params)
 
     assert response.status_code == wait_status_code

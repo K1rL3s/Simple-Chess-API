@@ -1,18 +1,12 @@
-import os
 from pathlib import Path
-
-from dotenv import load_dotenv
 import requests
 
 from src.consts import RequestsParams
+from tests.base import BASE_URL, headers
 
 
 IMAGES = Path(__file__).absolute().parent / 'board_images'
-BASE_URL = "http://127.0.0.1:5000/api/chess/board/"
-
-load_dotenv()
-
-headers = {"Authorization": os.environ.get("API_AUTH_KEY")}
+BASE_URL += "/board/"
 
 
 def test_board_fen():

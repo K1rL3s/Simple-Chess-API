@@ -1,16 +1,10 @@
-import os
-
 import requests
-from dotenv import load_dotenv
 
 from src.consts import Limits, Defaults
+from tests.base import BASE_URL, headers
 
 
-BASE_URL = "http://127.0.0.1:5000/api/chess/limits/"
-
-load_dotenv()
-
-headers = {"Authorization": os.getenv("API_AUTH_KEY")}
+BASE_URL += "/limits/"
 
 
 def test_limits():
